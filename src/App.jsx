@@ -1,15 +1,16 @@
-import './App.css'
-import Footer from './components/footer'
-import Home from './pages/home'
+import "./App.css";
+import Footer from "./components/footer";
+import Home from "./components/home";
+
+//* REACT ONLY HAS COMPONENTS "BEST PRACTICE WISE"
+//* NEXT.js HAS PAGES
 
 function App() {
-
   return (
     <>
-  <Home />
-
+      <Home />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
