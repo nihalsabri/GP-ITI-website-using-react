@@ -2,6 +2,10 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
+
+//المفروض ميتحطش هنا بس هسيبه هنا لحد ماكله يشوفه ويتأكدو انه شغال وياخدو نسخة منه عشان بعدها يتشال 
+// apiKey سر المفروض ميتحطش ف العلن كدا بس خليه لحد ماكله ياخد الملف ويتراجع 
+
 export const firebaseConfig = {
   production: false,
   firebase: {
