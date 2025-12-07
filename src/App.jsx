@@ -1,6 +1,6 @@
 import "./App.css";
-import Footer from "./components/footer";
-import Home from "./components/home";
+import Footer from "./components/Footer";
+import Home from "./components/Home";
 
 //* REACT ONLY HAS COMPONENTS "BEST PRACTICE WISE"
 //* NEXT.js HAS PAGES
