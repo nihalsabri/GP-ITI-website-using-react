@@ -7,16 +7,16 @@ const savedTheme = localStorage.getItem("theme") || "light";
 const themeSlice = createSlice({
   name: "theme",
   initialState: {
-    mode: savedTheme, // load from localStorage on startup
+    mode: savedTheme, //
   },
   reducers: {
     toggleThemeMode: (state) => {
       state.mode = state.mode === "light" ? "dark" : "light";
-      localStorage.setItem("theme", state.mode); // save change
+      localStorage.setItem("theme", state.mode);
     },
     setThemeMode: (state, action) => {
       state.mode = action.payload;
-      localStorage.setItem("theme", action.payload); // save change
+      localStorage.setItem("theme", action.payload);
     },
   },
 });
