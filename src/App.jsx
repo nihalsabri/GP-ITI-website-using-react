@@ -51,7 +51,7 @@ function App() {
         theme === "dark"
           ? "bg-gray-900 text-white"
           : "text-gray-900 bg-gray-100"
-      } min-h-screen rounded-xl`}
+      } min-h-screen `}
     >
       <RouterProvider router={router} />
     </div>
