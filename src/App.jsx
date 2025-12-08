@@ -1,11 +1,14 @@
 import { Outlet } from "react-router";
-import "./App.css";
+import { ThemeContext } from "./context/theme";
+
 import Footer from "./components/Footer";
 import Home from "./components/Home";
 import Navbar from "./components/Navbar";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
+import { useSelector } from "react-redux";
+import Services from "./components/Services";
 
 const router = createBrowserRouter([
   {
@@ -16,10 +19,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <LandingPage />,
       },
-      // {
-      //   path: "services",
-      //   element: <Services />,
-      // },
+      {
+        path: "services",
+        element: <Services />,
+      },
       // {
       //   path: "about",
       //   element: <About />,
@@ -36,10 +39,17 @@ const router = createBrowserRouter([
 //* NEXT.js HAS PAGES
 
 function App() {
+  const theme = useSelector((state) => state.theme.mode);
   return (
-    <>
+    <div
+      className={`${
+        theme === "dark"
+          ? "bg-gray-900 text-white"
+          : "text-gray-900 bg-gray-100"
+      } min-h-screen rounded-xl`}
+    >
       <RouterProvider router={router} />
-    </>
+    </div>
   );
 }
 
