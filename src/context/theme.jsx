@@ -1,3 +1,6 @@
+
+// لو حبينا نشغله بطريقة مختلفة موجود لو لأ هنمسحه عادي جداً 
+
 import { createContext, useState } from "react";
 
 export const ThemeContext = createContext();
