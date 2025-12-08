@@ -13,6 +13,8 @@ import NotFound from "./components/NotFound";
 import AboutUs from "./components/AboutUs";
 import Contact from "./components/Contact";
 import Tradespeople from "./components/Tradespeople";
+import Login from "./components/Login";
+import Register from "./components/Register";
 
 const router = createBrowserRouter([
   {
@@ -40,8 +42,17 @@ const router = createBrowserRouter([
         path: "tradespeople",
         element: <Tradespeople />,
       },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
+      },
     ],
   },
+
   {
     path: "*",
     element: <NotFound />,
