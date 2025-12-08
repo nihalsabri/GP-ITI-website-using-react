@@ -11,7 +11,7 @@ const Navbar = () => {
     dispatch(setThemeMode(theme === "light" ? "dark" : "light"));
   };
   return (
-    <div>
+    <div className="flex justify-between items-center p-4 shadow-md">
       <p className="text-2xl font-medium"> Navbar </p>
 
       <button
