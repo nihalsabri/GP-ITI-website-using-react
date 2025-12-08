@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setThemeMode } from "../store/themeSlice";
-import { Link } from "react-router";
+import { NavLink, Link } from "react-router-dom"; // <- use react-router-dom
 import { Moon, Sun } from "lucide-react";
 
 const Navbar = () => {
@@ -15,15 +15,30 @@ const Navbar = () => {
     dispatch(setThemeMode(theme === "light" ? "dark" : "light"));
   };
 
+  // Improve contrast for light mode: slightly darker text + subtle border
   const navClass =
     theme === "dark"
       ? "bg-gradient-to-r from-gray-900 via-gray-800 to-black shadow-[0_0_10px_rgba(0,0,0,0.7)]"
-      : "bg-white shadow-md";
+      : "bg-white border-b border-gray-200 shadow-sm"; // lighter shadow + border for separation
 
-  const linkClass =
-    theme === "dark"
-      ? "text-gray-200 hover:text-indigo-400"
-      : "text-gray-700 hover:text-indigo-600";
+  // Improved link styles to be more visible in light mode
+  const linkClass = ({ isActive }) =>
+    `px-3 py-2 text-sm transition-all duration-200 ${
+      isActive
+        ? `
+        text-indigo-500 
+        font-semibold
+        border-b-2 border-indigo-600 dark:border-indigo-400
+        pb-1
+      `
+        : theme === "dark"
+        ? "text-gray-300 hover:text-white font-medium"
+        : "text-gray-700 hover:text-indigo-700 font-medium"
+    }`;
+
+  // mobile uses same logic but as block
+  const mobileLinkClass = ({ isActive }) =>
+    `block py-2 ${linkClass({ isActive })}`;
 
   return (
     <nav
@@ -33,36 +48,36 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Brand */}
           <div className="flex items-center gap-3">
-            <a href="#" className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3">
               <div
                 className={`w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold shadow-md transition-all duration-300
-                ${theme === "dark" ? "bg-indigo-700" : "bg-indigo-500"}`}
+                ${theme === "dark" ? "bg-indigo-700" : "bg-indigo-600"}`}
               >
                 AP
               </div>
               <span
                 className={`hidden sm:inline-block text-lg font-semibold transition-all duration-300
-                ${theme === "dark" ? "text-gray-100" : "text-gray-800"}`}
+                ${theme === "dark" ? "text-gray-100" : "text-gray-900"}`}
               >
                 A placeholder for now
               </span>
-            </a>
+            </Link>
           </div>
 
-          {/* Desktop links */}
+          {/* Desktop */}
           <div className="hidden md:flex md:items-center md:gap-6">
-            <Link to="/" className={`${linkClass} transition`}>
+            <NavLink to="/" className={linkClass}>
               Home
-            </Link>
-            <Link to="/about" className={`${linkClass} transition`}>
-              About Us
-            </Link>
-            <Link to="/services" className={`${linkClass} transition`}>
+            </NavLink>
+            <NavLink to="/about" className={linkClass}>
+              About
+            </NavLink>
+            <NavLink to="/services" className={linkClass}>
               Services
-            </Link>
-            <Link to="/contact" className={`${linkClass} transition`}>
+            </NavLink>
+            <NavLink to="/contact" className={linkClass}>
               Contact
-            </Link>
+            </NavLink>
           </div>
 
           <div className="flex items-center gap-3">
@@ -76,6 +91,7 @@ const Navbar = () => {
                     ? "border-gray-700 bg-gray-800 text-gray-200"
                     : "border-gray-200 bg-white text-gray-700"
                 }`}
+              aria-label="Toggle theme"
             >
               {theme === "light" ? <Sun size={20} /> : <Moon size={20} />}
             </button>
@@ -88,6 +104,7 @@ const Navbar = () => {
                     ? "border-gray-700 bg-gray-800 text-gray-200"
                     : "border-gray-200 bg-white text-gray-700"
                 }`}
+              aria-label="Language selector"
             >
               AR / EN
             </button>
@@ -107,6 +124,7 @@ const Navbar = () => {
                       ? "border-gray-700 bg-gray-800"
                       : "border-gray-200 bg-white"
                   }`}
+                aria-label="Open menu"
               >
                 <svg
                   width="18"
@@ -133,7 +151,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile */}
       {mobileOpen && (
         <div
           className={`md:hidden border-t transition-all duration-300
@@ -144,20 +162,19 @@ const Navbar = () => {
           }`}
         >
           <div className="px-4 pt-4 pb-6 space-y-3">
-            <Link to="/" className={`block py-2 ${linkClass}`}>
+            <NavLink to="/" end className={mobileLinkClass}>
               Home
-            </Link>
-            <Link to="/about" className={`block py-2 ${linkClass}`}>
+            </NavLink>
+            <NavLink to="/about" className={mobileLinkClass}>
               About Us
-            </Link>
-            <Link to="/contact" className={`block py-2 ${linkClass}`}>
-              Contact
-            </Link>
-            <Link to="/services" className={`block py-2 ${linkClass}`}>
+            </NavLink>
+            <NavLink to="/services" className={mobileLinkClass}>
               Services
-            </Link>
+            </NavLink>
+            <NavLink to="/contact" className={mobileLinkClass}>
+              Contact
+            </NavLink>
 
-            {/* //* موجودين وبيظهرو كدا كدا فوق ولينا حرية الاختيار بين عرضهم ف المنيو او عرضهم ف الناف نفسه لما نتفق نشغل واحدة ونقفل التانية */}
             <div className="flex gap-2 justify-around items-center pt-3 border-t border-gray-700/30">
               <button className="text-center px-3 py-2 rounded-md bg-indigo-600 text-white">
                 Login / Register
