@@ -133,7 +133,7 @@ const Navbar = () => {
               </Link>
             )}
 
-            {/* Avatar (show when token exists) */}
+            {/* Avatar مش هيظهر غير لو في توكن ف الستوراج */}
             {userToken && (
               <div className="relative">
                 <button
