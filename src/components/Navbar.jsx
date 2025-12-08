@@ -2,14 +2,28 @@ import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setThemeMode } from "../store/themeSlice";
-import { NavLink, Link } from "react-router-dom"; // <- use react-router-dom
+import { NavLink, Link, useNavigate } from "react-router-dom"; // <- use react-router-dom
 import { GlobeIcon, Moon, Sun } from "lucide-react";
+import { userLogout } from "../services/auth";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [avatarOpen, setAvatarOpen] = useState(false); // <- avatar dropdown state
 
   const theme = useSelector((state) => state.theme.mode);
   const dispatch = useDispatch();
+
+  const userToken = localStorage.getItem("token");
+
+  const navigate = useNavigate(); // <-- added so handleLogout can navigate
+
+  const handleLogout = async () => {
+    // Put your logout logic here
+    // console.log("Logout clicked");
+    await userLogout();
+    localStorage.removeItem("token");
+    navigate("/");
+  };
 
   const setTheme = () => {
     dispatch(setThemeMode(theme === "light" ? "dark" : "light"));
@@ -109,10 +123,71 @@ const Navbar = () => {
               AR / EN
             </button>
 
-            {/* Login/Register لما تتعمل */}
-            <button className="px-4 py-2 hidden md:flex rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-shadow shadow">
-              Login / Register
-            </button>
+            {/* Login/Register لما تتعمل (keep visible only if no token) */}
+            {!userToken && (
+              <Link
+                to="/login"
+                className="hidden md:inline-block text-center px-3 py-2 rounded-md bg-indigo-600 text-white"
+              >
+                Login / Register
+              </Link>
+            )}
+
+            {/* Avatar (show when token exists) */}
+            {userToken && (
+              <div className="relative">
+                <button
+                  onClick={() => setAvatarOpen((v) => !v)}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-medium shadow-sm transition
+                    ${
+                      theme === "dark"
+                        ? "bg-indigo-700 text-white"
+                        : "bg-indigo-600 text-white"
+                    }`}
+                  aria-label="User menu"
+                >
+                  {/* Placeholder initial — replace with real user picture when available */}
+                  U
+                </button>
+
+                {/* Dropdown */}
+                {avatarOpen && (
+                  <div
+                    className={`absolute right-0 mt-2 w-44 rounded-md overflow-hidden shadow-lg z-50 ${
+                      theme === "dark"
+                        ? "bg-gray-800 text-gray-100"
+                        : "bg-white text-gray-900"
+                    }`}
+                  >
+                    <div className="py-2">
+                      <Link
+                        to="/account"
+                        className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                        onClick={() => setAvatarOpen(false)}
+                      >
+                        Account
+                      </Link>
+                      <Link
+                        to="/settings"
+                        className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                        onClick={() => setAvatarOpen(false)}
+                      >
+                        Settings
+                      </Link>
+                      <button
+                        onClick={async () => {
+                          setAvatarOpen(false);
+                          await handleLogout();
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Mobile button */}
             <div className="md:hidden">
@@ -155,11 +230,11 @@ const Navbar = () => {
       {mobileOpen && (
         <div
           className={`md:hidden border-t transition-all duration-300
-          ${
-            theme === "dark"
-              ? "border-gray-800 bg-gray-900"
-              : "border-gray-100 bg-white"
-          }`}
+      ${
+        theme === "dark"
+          ? "border-gray-800 bg-gray-900"
+          : "border-gray-100 bg-white"
+      }`}
         >
           <div className="px-4 pt-4 pb-6 space-y-3">
             <NavLink to="/" end className={mobileLinkClass}>
@@ -175,21 +250,51 @@ const Navbar = () => {
               Contact
             </NavLink>
 
-            <div className="flex gap-2 justify-around items-center pt-3 border-t border-gray-700/30">
-              <button className="text-center px-3 py-2 rounded-md bg-indigo-600 text-white">
-                Login / Register
-              </button>
-              <div className="flex items-center gap-2 justify-around ">
+            {/* Divider + bottom section LIKE YOU HAD IT */}
+            <div className="flex flex-col gap-3 items-center pt-6 border-t border-gray-700/30">
+              {/* Login/Register button (ONLY if no token) */}
+              {!userToken && (
+                <Link
+                  to="/login"
+                  className="text-center px-4 py-2 rounded-md bg-indigo-600 text-white shadow hover:bg-indigo-700 transition"
+                >
+                  Login / Register
+                </Link>
+              )}
+
+              {/* Theme + Language buttons EXACTLY AS YOU HAD THEM */}
+              <div className="flex gap-3 items-center">
                 <button
                   onClick={setTheme}
-                  className=" px-3 py-2 rounded-md border"
+                  className={`px-3 py-2 rounded-md border ${
+                    theme === "dark"
+                      ? "border-gray-700 bg-gray-800 text-gray-200"
+                      : "border-gray-200 bg-white text-gray-700"
+                  }`}
                 >
                   {theme === "light" ? <Sun size={20} /> : <Moon size={20} />}
                 </button>
-                <button className=" px-3 py-2 rounded-md border">
+
+                <button
+                  className={`px-3 py-2 rounded-md border ${
+                    theme === "dark"
+                      ? "border-gray-700 bg-gray-800 text-gray-200"
+                      : "border-gray-200 bg-white text-gray-700"
+                  }`}
+                >
                   <GlobeIcon size={20} />
                 </button>
               </div>
+
+              {/* Logout button (ONLY if logged in) */}
+              {userToken && (
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 rounded-md bg-red-600 text-white shadow hover:bg-red-700 transition w-full"
+                >
+                  Logout
+                </button>
+              )}
             </div>
           </div>
         </div>
