@@ -68,7 +68,8 @@ const Navbar = () => {
             {/* Theme toggle */}
             <button
               onClick={setTheme}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md border text-sm transition transform hover:scale-105 shadow-sm
+              className={` items-center hidden md:flex gap-2 px-3 py-2 rounded-md border text-sm transition
+                 transform hover:scale-105 shadow-sm
                 ${
                   theme === "dark"
                     ? "border-gray-700 bg-gray-800 text-gray-200"
@@ -80,7 +81,7 @@ const Navbar = () => {
 
             {/* Language */}
             <button
-              className={`px-3 py-2 rounded-md border text-sm transition transform hover:scale-105 shadow-sm
+              className={`px-3 py-2 hidden md:flex rounded-md border text-sm transition transform hover:scale-105 shadow-sm
                 ${
                   theme === "dark"
                     ? "border-gray-700 bg-gray-800 text-gray-200"
@@ -91,7 +92,7 @@ const Navbar = () => {
             </button>
 
             {/* Login/Register لما تتعمل */}
-            <button className="px-4 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-shadow shadow">
+            <button className="px-4 py-2 hidden md:flex rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-shadow shadow">
               {/* {user ? "Account" : "Login / Register"} */}
               Login / Register
             </button>
@@ -157,14 +158,14 @@ const Navbar = () => {
             </Link>
 
             {/* //* موجودين وبيظهرو كدا كدا فوق ولينا حرية الاختيار بين عرضهم ف المنيو او عرضهم ف الناف نفسه لما نتفق نشغل واحدة ونقفل التانية */}
-            {/* <div className="pt-3 border-t border-gray-700/30"> */}
-            {/* <button className="w-full text-center px-3 py-2 rounded-md bg-indigo-600 text-white"> */}
-            {/* {user ? "Account" : "Login / Register"} */}
-            {/* Login / Register */}
-            {/* </button> */}
-            {/* </div> */}
+            <div className="pt-3 border-t border-gray-700/30">
+              <button className="w-full text-center px-3 py-2 rounded-md bg-indigo-600 text-white">
+                {/* {user ? "Account" : "Login / Register"} */}
+                Login / Register
+              </button>
+            </div>
 
-            {/* <div className="flex gap-2 pt-3">
+            <div className="flex gap-2 pt-3">
               <button
                 onClick={setTheme}
                 className="flex-1 px-3 py-2 rounded-md border"
@@ -174,7 +175,7 @@ const Navbar = () => {
               <button className="flex-1 px-3 py-2 rounded-md border">
                 AR / EN
               </button>
-            </div> */}
+            </div>
           </div>
         </div>
       )}
