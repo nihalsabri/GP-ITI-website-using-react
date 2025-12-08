@@ -9,6 +9,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import { useSelector } from "react-redux";
 import Services from "./components/Services";
+import NotFound from "./components/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       //   element: <Contact />,
       // },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
 
