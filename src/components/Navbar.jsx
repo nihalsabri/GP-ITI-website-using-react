@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setThemeMode } from "../store/themeSlice";
 import { Link } from "react-router";
+import { Moon, Sun } from "lucide-react";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -76,7 +77,7 @@ const Navbar = () => {
                     : "border-gray-200 bg-white text-gray-700"
                 }`}
             >
-              {theme === "light" ? "Light" : "Dark"}
+              {theme === "light" ? <Sun size={20} /> : <Moon size={20} />}
             </button>
 
             {/* Language */}
@@ -158,23 +159,22 @@ const Navbar = () => {
             </Link>
 
             {/* //* موجودين وبيظهرو كدا كدا فوق ولينا حرية الاختيار بين عرضهم ف المنيو او عرضهم ف الناف نفسه لما نتفق نشغل واحدة ونقفل التانية */}
-            <div className="pt-3 border-t border-gray-700/30">
-              <button className="w-full text-center px-3 py-2 rounded-md bg-indigo-600 text-white">
+            <div className="flex gap-2 justify-around items-center pt-3 border-t border-gray-700/30">
+              <button className="text-center px-3 py-2 rounded-md bg-indigo-600 text-white">
                 {/* {user ? "Account" : "Login / Register"} */}
                 Login / Register
               </button>
-            </div>
-
-            <div className="flex gap-2 pt-3">
-              <button
-                onClick={setTheme}
-                className="flex-1 px-3 py-2 rounded-md border"
-              >
-                Theme
-              </button>
-              <button className="flex-1 px-3 py-2 rounded-md border">
-                AR / EN
-              </button>
+              <div className="flex items-center gap-2 justify-around ">
+                <button
+                  onClick={setTheme}
+                  className=" px-3 py-2 rounded-md border"
+                >
+                  {theme === "light" ? <Sun size={20} /> : <Moon size={20} />}
+                </button>
+                <button className=" px-3 py-2 rounded-md border">
+                  AR / EN
+                </button>
+              </div>
             </div>
           </div>
         </div>
