@@ -94,7 +94,6 @@ const Navbar = () => {
 
             {/* Login/Register لما تتعمل */}
             <button className="px-4 py-2 hidden md:flex rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-shadow shadow">
-              {/* {user ? "Account" : "Login / Register"} */}
               Login / Register
             </button>
 
@@ -161,7 +160,6 @@ const Navbar = () => {
             {/* //* موجودين وبيظهرو كدا كدا فوق ولينا حرية الاختيار بين عرضهم ف المنيو او عرضهم ف الناف نفسه لما نتفق نشغل واحدة ونقفل التانية */}
             <div className="flex gap-2 justify-around items-center pt-3 border-t border-gray-700/30">
               <button className="text-center px-3 py-2 rounded-md bg-indigo-600 text-white">
-                {/* {user ? "Account" : "Login / Register"} */}
                 Login / Register
               </button>
               <div className="flex items-center gap-2 justify-around ">
