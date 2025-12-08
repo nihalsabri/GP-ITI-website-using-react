@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setThemeMode } from "../store/themeSlice";
 import { NavLink, Link } from "react-router-dom"; // <- use react-router-dom
-import { Moon, Sun } from "lucide-react";
+import { GlobeIcon, Moon, Sun } from "lucide-react";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -187,7 +187,7 @@ const Navbar = () => {
                   {theme === "light" ? <Sun size={20} /> : <Moon size={20} />}
                 </button>
                 <button className=" px-3 py-2 rounded-md border">
-                  AR / EN
+                  <GlobeIcon size={20} />
                 </button>
               </div>
             </div>
