@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-// import { createStore } from "@reduxjs/toolkit";
+
 import themeReducer from "./themeSlice";
 import LangReducer from "./LangSlice";
 
