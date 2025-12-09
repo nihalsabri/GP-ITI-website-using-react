@@ -1,4 +1,4 @@
-// Register.jsx
+// src/components/Register.jsx
 import React, { useState } from "react";
 import { userRegister } from "../services/auth";
 import toast, { Toaster } from "react-hot-toast";
@@ -10,131 +10,77 @@ import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     username: "",
+    email: "",
     password: "",
     confirmPassword: "",
   });
-
-  const [errors, setErrors] = useState({
-    nameError: "",
-    emailError: "",
-    usernameError: "",
-    passwordError: "",
-    confirmPasswordError: "",
-  });
-
-  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const theme = useSelector((state) => state.theme.mode);
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    // validation
-    if (name === "name") {
-      setErrors((prev) => ({
-        ...prev,
-        nameError:
-          value.length < 3
-            ? "Name must be at least 3 characters"
-            : value.trim() === ""
-            ? "Name cannot be empty"
-            : "",
-      }));
-    }
-
-    if (name === "username") {
-      setErrors((prev) => ({
-        ...prev,
-        usernameError:
-          value.length < 3
-            ? "Username must be at least 3 characters"
-            : value.trim() === ""
-            ? "Username cannot be empty"
-            : "",
-      }));
-    }
-
-    if (name === "email") {
-      setErrors((prev) => ({
-        ...prev,
-        emailError: !value.includes("@") ? "Please enter a valid email" : "",
-      }));
-    }
-
-    if (name === "password") {
-      setErrors((prev) => ({
-        ...prev,
-        passwordError:
-          value.length < 8
-            ? "Password must be at least 8 characters"
-            : value.trim() === ""
-            ? "Password cannot be empty"
-            : "",
-      }));
-
-      // also validate confirm if already typed
-      if (formData.confirmPassword) {
-        setErrors((prev) => ({
-          ...prev,
-          confirmPasswordError:
-            formData.confirmPassword !== value ? "Passwords do not match" : "",
-        }));
-      }
-    }
-
-    if (name === "confirmPassword") {
-      setErrors((prev) => ({
-        ...prev,
-        confirmPasswordError:
-          value !== formData.password ? "Passwords do not match" : "",
-      }));
-    }
-
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const validateField = (name, value) => {
+    let msg = "";
+    if (name === "name" && value.trim().length < 3) msg = "Name too short";
+    if (name === "username" && value.trim().length < 3)
+      msg = "Username too short";
+    if (name === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+      msg = "Invalid email";
+    if (name === "password" && value.length < 8)
+      msg = "Password must be 8+ characters";
+    if (name === "confirmPassword" && value !== formData.password)
+      msg = "Passwords do not match";
+    setErrors((p) => ({ ...p, [name]: msg }));
   };
 
-  const hasErrors = () =>
-    !!(
-      errors.nameError ||
-      errors.emailError ||
-      errors.usernameError ||
-      errors.passwordError ||
-      errors.confirmPasswordError
-    );
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    validateField(name, value);
+    setFormData((p) => ({ ...p, [name]: value }));
+  };
+
+  const hasErrors = () => Object.values(errors).some(Boolean);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // final check
     if (hasErrors()) {
-      toast.error("Please fix the form errors before submitting.");
+      toast.error("Fix form errors first.");
       return;
     }
 
     setLoading(true);
     try {
-      // keep your existing register logic
-      await userRegister(formData.email, formData.password);
+      await userRegister(formData.email.trim(), formData.password, {
+        name: formData.name.trim(),
+        username: formData.username.trim(),
+        phone: "",
+        profilePic: "",
+      });
 
-      // optional: clear the form
+      // Optional: store a minimal client object for UI (username + initial)
+      const username =
+        formData.username || formData.name || formData.email.split("@")[0];
+      const initial = username ? username[0].toUpperCase() : "U";
+      localStorage.setItem("client", JSON.stringify({ username, initial }));
+
+      toast.success("Registered successfully — please login");
       setFormData({
         name: "",
-        email: "",
         username: "",
+        email: "",
         password: "",
         confirmPassword: "",
       });
-
-      toast.success("Registered successfully");
       navigate("/login");
     } catch (err) {
-      console.error(err);
-      toast.error(err?.message || "Registration failed");
+      console.error("register failed:", err.code, err.message);
+      if (err.code === "auth/email-already-in-use")
+        toast.error("Email already in use");
+      else toast.error("Registration failed");
     } finally {
       setLoading(false);
     }
@@ -143,16 +89,13 @@ const Register = () => {
   const cardBg =
     theme === "dark" ? "bg-gray-800 text-gray-50" : "bg-white text-gray-900";
   const inputBg =
-    theme === "dark"
-      ? "bg-gray-700/40 text-gray-50 placeholder-gray-300"
-      : "bg-gray-50 text-gray-900 placeholder-gray-500";
-  const borderClass = theme === "dark" ? "border-gray-600" : "border-gray-200";
+    theme === "dark" ? "bg-gray-700/40" : "bg-gray-50 text-gray-900";
 
   return (
     <>
       <div className="min-h-[70vh] flex items-center justify-center py-10 px-4">
         <div
-          className={`w-full max-w-lg rounded-2xl shadow-xl overflow-hidden transform transition-all duration-200 ${cardBg} border ${borderClass}`}
+          className={`w-full max-w-lg rounded-2xl shadow-xl border ${cardBg}`}
         >
           <div className="flex items-center gap-4 px-6 py-6">
             <div
@@ -164,238 +107,129 @@ const Register = () => {
             </div>
             <div>
               <h2 className="text-lg font-semibold">Create your account</h2>
-              <p className="text-sm text-gray-400">
-                Join Tradesmen — quick and easy
-              </p>
+              <p className="text-sm text-gray-400">Join our platform</p>
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="px-6 pb-6 pt-2 space-y-4">
-            {/* Name */}
+          <form onSubmit={handleSubmit} className="px-6 pb-6 space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium mb-1">
-                Name
-              </label>
+              <label className="text-sm font-medium">Name</label>
               <div
-                className={`flex items-center gap-2 rounded-md border ${borderClass} px-3 py-2 ${inputBg}`}
+                className={`flex items-center border rounded-md px-3 py-2 ${inputBg}`}
               >
-                <User
-                  size={16}
-                  className={
-                    theme === "dark" ? "text-gray-200" : "text-gray-500"
-                  }
-                />
+                <User size={16} />
                 <Input
-                  id="name"
                   name="name"
-                  type="text"
-                  value={formData.name}
-                  onChange={handleChange}
                   placeholder="Full name"
-                  className="w-full bg-transparent outline-none text-sm"
-                  aria-describedby="name-error"
-                />
-              </div>
-              {errors.nameError && (
-                <p
-                  id="name-error"
-                  className="mt-1 text-xs text-red-400 font-medium"
-                >
-                  {errors.nameError}
-                </p>
-              )}
-            </div>
-
-            {/* Email */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-1">
-                Email
-              </label>
-              <div
-                className={`flex items-center gap-2 rounded-md border ${borderClass} px-3 py-2 ${inputBg}`}
-              >
-                <Mail
-                  size={16}
-                  className={
-                    theme === "dark" ? "text-gray-200" : "text-gray-500"
-                  }
-                />
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
                   onChange={handleChange}
-                  placeholder="you@example.com"
-                  className="w-full bg-transparent outline-none text-sm"
-                  aria-describedby="email-error"
+                  value={formData.name}
+                  className="w-full bg-transparent outline-none"
                 />
               </div>
-              {errors.emailError && (
-                <p
-                  id="email-error"
-                  className="mt-1 text-xs text-red-400 font-medium"
-                >
-                  {errors.emailError}
-                </p>
+              {errors.name && (
+                <p className="text-xs text-red-400">{errors.name}</p>
               )}
             </div>
 
-            {/* Username */}
             <div>
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium mb-1"
-              >
-                Username
-              </label>
+              <label className="text-sm font-medium">Username</label>
               <div
-                className={`flex items-center gap-2 rounded-md border ${borderClass} px-3 py-2 ${inputBg}`}
+                className={`flex items-center border rounded-md px-3 py-2 ${inputBg}`}
               >
-                <div
-                  className={
-                    theme === "dark" ? "text-gray-200" : "text-gray-500"
-                  }
-                >
-                  @
-                </div>
+                <span>@</span>
                 <Input
-                  id="username"
                   name="username"
-                  type="text"
-                  value={formData.username}
-                  onChange={handleChange}
                   placeholder="username"
-                  className="w-full bg-transparent outline-none text-sm"
-                  aria-describedby="username-error"
+                  onChange={handleChange}
+                  value={formData.username}
+                  className="w-full bg-transparent outline-none"
                 />
               </div>
-              {errors.usernameError && (
-                <p
-                  id="username-error"
-                  className="mt-1 text-xs text-red-400 font-medium"
-                >
-                  {errors.usernameError}
-                </p>
+              {errors.username && (
+                <p className="text-xs text-red-400">{errors.username}</p>
               )}
             </div>
 
-            {/* Password */}
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium mb-1"
-              >
-                Password
-              </label>
+              <label className="text-sm font-medium">Email</label>
               <div
-                className={`flex items-center gap-2 rounded-md border ${borderClass} px-3 py-2 ${inputBg}`}
+                className={`flex items-center border rounded-md px-3 py-2 ${inputBg}`}
               >
-                <Lock
-                  size={16}
-                  className={
-                    theme === "dark" ? "text-gray-200" : "text-gray-500"
-                  }
-                />
+                <Mail size={16} />
                 <Input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  value={formData.password}
+                  name="email"
+                  placeholder="Email"
                   onChange={handleChange}
-                  placeholder="Create a password"
-                  className="w-full bg-transparent outline-none text-sm"
-                  aria-describedby="password-error"
+                  value={formData.email}
+                  className="w-full bg-transparent outline-none"
+                />
+              </div>
+              {errors.email && (
+                <p className="text-xs text-red-400">{errors.email}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="text-sm font-medium">Password</label>
+              <div
+                className={`flex items-center border rounded-md px-3 py-2 ${inputBg}`}
+              >
+                <Lock size={16} />
+                <Input
+                  name="password"
+                  type={showPass ? "text" : "password"}
+                  placeholder="Password"
+                  onChange={handleChange}
+                  value={formData.password}
+                  className="w-full bg-transparent outline-none"
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword((s) => !s)}
-                  className="p-1 rounded hover:bg-white/10 transition"
-                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  onClick={() => setShowPass((v) => !v)}
+                  className="p-1"
                 >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
-              {errors.passwordError && (
-                <p
-                  id="password-error"
-                  className="mt-1 text-xs text-red-400 font-medium"
-                >
-                  {errors.passwordError}
-                </p>
+              {errors.password && (
+                <p className="text-xs text-red-400">{errors.password}</p>
               )}
             </div>
 
-            {/* Confirm Password */}
             <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium mb-1"
-              >
-                Confirm Password
-              </label>
+              <label className="text-sm font-medium">Confirm Password</label>
               <div
-                className={`flex items-center gap-2 rounded-md border ${borderClass} px-3 py-2 ${inputBg}`}
+                className={`flex items-center border rounded-md px-3 py-2 ${inputBg}`}
               >
-                <Lock
-                  size={16}
-                  className={
-                    theme === "dark" ? "text-gray-200" : "text-gray-500"
-                  }
-                />
+                <Lock size={16} />
                 <Input
-                  id="confirmPassword"
                   name="confirmPassword"
                   type={showConfirm ? "text" : "password"}
-                  value={formData.confirmPassword}
+                  placeholder="Repeat password"
                   onChange={handleChange}
-                  placeholder="Repeat your password"
-                  className="w-full bg-transparent outline-none text-sm"
-                  aria-describedby="confirm-password-error"
+                  value={formData.confirmPassword}
+                  className="w-full bg-transparent outline-none"
                 />
                 <button
                   type="button"
-                  onClick={() => setShowConfirm((s) => !s)}
-                  className="p-1 rounded hover:bg-white/10 transition"
-                  aria-label={
-                    showConfirm
-                      ? "Hide confirm password"
-                      : "Show confirm password"
-                  }
+                  onClick={() => setShowConfirm((v) => !v)}
+                  className="p-1"
                 >
                   {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
-              {errors.confirmPasswordError && (
-                <p
-                  id="confirm-password-error"
-                  className="mt-1 text-xs text-red-400 font-medium"
-                >
-                  {errors.confirmPasswordError}
-                </p>
+              {errors.confirmPassword && (
+                <p className="text-xs text-red-400">{errors.confirmPassword}</p>
               )}
             </div>
 
-            <div className="flex items-center justify-between gap-4 pt-2">
-              <button
-                type="submit"
-                disabled={loading}
-                className={`flex-1 bg-green-700 hover:bg-green-900 text-white px-4 py-2 rounded-md font-semibold shadow-md disabled:opacity-60 disabled:cursor-not-allowed transition`}
-              >
-                {loading ? "Signing up..." : "Sign Up"}
-              </button>
-
-              <div className="text-sm">
-                <span className="text-gray-400">Already have an account? </span>
-                <button
-                  type="button"
-                  onClick={() => navigate("/login")}
-                  className="text-indigo-300 hover:underline"
-                >
-                  Login
-                </button>
-              </div>
-            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-green-700 text-white py-2 rounded-md"
+            >
+              {loading ? "Signing up..." : "Sign Up"}
+            </button>
           </form>
         </div>
       </div>
