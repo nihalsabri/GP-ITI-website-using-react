@@ -89,6 +89,9 @@ const Navbar = () => {
             <NavLink to="/services" className={linkClass}>
               Services
             </NavLink>
+            <NavLink to="/tradespeople" className={linkClass}>
+              Tradespeople
+            </NavLink>
             <NavLink to="/contact" className={linkClass}>
               Contact
             </NavLink>
@@ -245,6 +248,9 @@ const Navbar = () => {
             </NavLink>
             <NavLink to="/services" className={mobileLinkClass}>
               Services
+            </NavLink>
+            <NavLink to="/tradespeople" className={linkClass}>
+              Tradespeople
             </NavLink>
             <NavLink to="/contact" className={mobileLinkClass}>
               Contact
