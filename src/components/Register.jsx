@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { userRegister } from "../services/auth";
 import toast, { Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Input from "./Input";
 import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
@@ -230,6 +230,13 @@ const Register = () => {
             >
               {loading ? "Signing up..." : "Sign Up"}
             </button>
+
+            <p className="text-center text-sm mt-3">
+              Already have an account?{" "}
+              <Link to="/login" className="text-indigo-400">
+                Login
+              </Link>
+            </p>
           </form>
         </div>
       </div>
