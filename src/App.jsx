@@ -15,6 +15,7 @@ import Contact from "./components/Contact";
 import Tradespeople from "./components/Tradespeople";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Search from "./components/Search";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "services",
         element: <Services />,
+      },
+      {
+        path: "search",
+        element: <Search />,
       },
       {
         path: "about",
