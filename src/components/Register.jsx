@@ -9,8 +9,8 @@ import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    username: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -25,9 +25,11 @@ const Register = () => {
 
   const validateField = (name, value) => {
     let msg = "";
-    if (name === "name" && value.trim().length < 3) msg = "Name too short";
-    if (name === "username" && value.trim().length < 3)
-      msg = "Username too short";
+    if (
+      (name === "firstName" || name === "lastName") &&
+      value.trim().length < 2
+    )
+      msg = `${name === "firstName" ? "First name" : "Last name"} too short`;
     if (name === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
       msg = "Invalid email";
     if (name === "password" && value.length < 8)
@@ -54,23 +56,27 @@ const Register = () => {
 
     setLoading(true);
     try {
+      const firstName = formData.firstName.trim();
+      const lastName = formData.lastName.trim();
+      const displayName = `${firstName} ${lastName}`.trim();
+
       await userRegister(formData.email.trim(), formData.password, {
-        name: formData.name.trim(),
-        username: formData.username.trim(),
+        firstName,
+        lastName,
+        username: displayName, // keep username available as before (First Last)
         phone: "",
         profilePic: "",
       });
 
       // Optional: store a minimal client object for UI (username + initial)
-      const username =
-        formData.username || formData.name || formData.email.split("@")[0];
+      const username = displayName || formData.email.split("@")[0];
       const initial = username ? username[0].toUpperCase() : "U";
       localStorage.setItem("client", JSON.stringify({ username, initial }));
 
       toast.success("Registered successfully — please login");
       setFormData({
-        name: "",
-        username: "",
+        firstName: "",
+        lastName: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -113,40 +119,40 @@ const Register = () => {
 
           <form onSubmit={handleSubmit} className="px-6 pb-6 space-y-4">
             <div>
-              <label className="text-sm font-medium">Name</label>
+              <label className="text-sm font-medium">First name</label>
               <div
                 className={`flex items-center border rounded-md px-3 py-2 ${inputBg}`}
               >
                 <User size={16} />
                 <Input
-                  name="name"
-                  placeholder="Full name"
+                  name="firstName"
+                  placeholder="First name"
                   onChange={handleChange}
-                  value={formData.name}
+                  value={formData.firstName}
                   className="w-full bg-transparent outline-none"
                 />
               </div>
-              {errors.name && (
-                <p className="text-xs text-red-400">{errors.name}</p>
+              {errors.firstName && (
+                <p className="text-xs text-red-400">{errors.firstName}</p>
               )}
             </div>
 
             <div>
-              <label className="text-sm font-medium">Username</label>
+              <label className="text-sm font-medium">Last name</label>
               <div
                 className={`flex items-center border rounded-md px-3 py-2 ${inputBg}`}
               >
-                <span>@</span>
+                <User size={16} />
                 <Input
-                  name="username"
-                  placeholder="username"
+                  name="lastName"
+                  placeholder="Last name"
                   onChange={handleChange}
-                  value={formData.username}
+                  value={formData.lastName}
                   className="w-full bg-transparent outline-none"
                 />
               </div>
-              {errors.username && (
-                <p className="text-xs text-red-400">{errors.username}</p>
+              {errors.lastName && (
+                <p className="text-xs text-red-400">{errors.lastName}</p>
               )}
             </div>
 
