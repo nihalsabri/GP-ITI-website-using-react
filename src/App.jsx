@@ -16,6 +16,7 @@ import Tradespeople from "./components/Tradespeople";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Search from "./components/Search";
+import Tradesperson from "./components/Tradesperson";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,11 @@ const router = createBrowserRouter([
       {
         path: "tradespeople",
         element: <Tradespeople />,
+      },
+
+      {
+        path: "/tradespeople/:id",
+        element: <Tradesperson />,
       },
       {
         path: "/login",
