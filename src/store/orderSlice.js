@@ -1,26 +1,67 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+  client: null, // who made the order
+  tradesperson: null, // who the order is for
+  services: [], // selected services
+};
+
 const orderSlice = createSlice({
   name: "order",
-  initialState: {
-    services: [], // selected services
-  },
+  initialState,
   reducers: {
+    // =====================
+    // CLIENT
+    // =====================
+    setClient: (state, action) => {
+      state.client = action.payload;
+    },
+
+    // =====================
+    // TRADESPERSON
+    // =====================
+    setTradesperson: (state, action) => {
+      const incoming = action.payload;
+
+      // لو دخلنا على صنايعي مختلف → نمسح الخدمات
+      if (state.tradesperson && state.tradesperson.id !== incoming.id) {
+        state.services = [];
+      }
+
+      state.tradesperson = incoming;
+    },
+
+    // =====================
+    // SERVICES
+    // =====================
     addService: (state, action) => {
       const exists = state.services.find((s) => s.id === action.payload.id);
+
       if (!exists) {
-        state.services.push(action.payload);
+        state.services.push({
+          ...action.payload,
+          addedAt: new Date().toISOString(),
+        });
       }
     },
+
     removeService: (state, action) => {
       state.services = state.services.filter((s) => s.id !== action.payload);
     },
-    clearOrder: (state) => {
-      state.services = [];
-    },
+
+    // =====================
+    // CLEAR ORDER
+    // =====================
+    clearOrder: () => initialState,
   },
 });
 
-export const { addService, removeService, clearOrder } = orderSlice.actions;
+export const {
+  setClient,
+  setTradesperson,
+  addService,
+  removeService,
+  clearOrder,
+} = orderSlice.actions;
 
 export default orderSlice.reducer;
