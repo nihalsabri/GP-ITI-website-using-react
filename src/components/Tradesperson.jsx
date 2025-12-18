@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import api from "../services/api";
-import { addService } from "../store/orderSlice";
+import { addService, setTradesperson } from "../store/orderSlice";
 
 const tradeServiceMap = {
   "electric technician": "Electrical",
@@ -32,7 +32,7 @@ const Tradesperson = () => {
         if (!res.data) {
           setPerson(null);
         } else {
-          setPerson(res.data);
+          setPerson({ id, ...res.data });
           setRating(res.data.rating || 0);
         }
       })
@@ -42,6 +42,21 @@ const Tradesperson = () => {
       })
       .finally(() => setLoading(false));
   }, [id]);
+
+  // ========================
+  // Set tradesperson in Redux
+  // ========================
+  useEffect(() => {
+    if (!person) return;
+
+    dispatch(
+      setTradesperson({
+        id: person.id,
+        name: person.name,
+        trade: person.trade,
+      })
+    );
+  }, [person, dispatch]);
 
   // ========================
   // Fetch services by trade
@@ -74,7 +89,7 @@ const Tradesperson = () => {
     setRating(value);
 
     try {
-      await api.patch(`/tradespeople/${id}.json`, {
+      await api.patch(`/Tradespeople/${id}.json`, {
         rating: Number(value),
       });
     } catch (err) {
@@ -120,7 +135,7 @@ const Tradesperson = () => {
           <p>📞 {person.phone}</p>
           <p>✉️ {person.email}</p>
 
-          <p className="mt-3">⭐ Current rating: {person.rating}</p>
+          <p className="mt-3">⭐ Current rating: {person.rating ?? 0}</p>
 
           <div className="mt-4">
             <label className="block mb-1 font-medium">
@@ -154,9 +169,9 @@ const Tradesperson = () => {
             </p>
           ) : (
             <div className="grid md:grid-cols-2 gap-6">
-              {services.map((service, idx) => (
+              {services.map((service) => (
                 <div
-                  key={idx}
+                  key={service.id}
                   className={`p-5 rounded-xl border ${
                     theme === "dark"
                       ? "bg-gray-800 border-gray-700"
@@ -175,9 +190,10 @@ const Tradesperson = () => {
                     onClick={() =>
                       dispatch(
                         addService({
-                          ...service,
-                          tradespersonId: id,
-                          tradespersonName: person.name,
+                          id: service.id,
+                          name: service.name,
+                          price: service.price,
+                          category: service.category,
                         })
                       )
                     }
