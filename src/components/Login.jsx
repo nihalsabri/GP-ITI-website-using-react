@@ -1,11 +1,11 @@
-// src/components/Login.jsx
 import React, { useState } from "react";
 import { userLogin } from "../services/auth";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "./Input";
 import { Toaster, toast } from "react-hot-toast";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setClient } from "../store/orderSlice";
 
 const Login = () => {
   const [loginInputs, setLoginInputs] = useState({ email: "", password: "" });
@@ -17,6 +17,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const theme = useSelector((state) => state.theme.mode);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -30,6 +31,7 @@ const Login = () => {
           : "",
       }));
     }
+
     if (e.target.name === "password") {
       setInputsError((s) => ({
         ...s,
@@ -44,41 +46,60 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // normalize + simple validation
-    const email = (loginInputs.email || "").trim();
-    const password = (loginInputs.password || "").trim();
+    const email = loginInputs.email.trim();
+    const password = loginInputs.password.trim();
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       toast.error("Please enter a valid email address");
       return;
     }
+
     if (password.length < 8) {
       toast.error("Password must be at least 8 characters");
       return;
     }
 
     setLoading(true);
+
     try {
       const { authResult, profile, token } = await userLogin(email, password);
 
-      // Save token + client for UI (Navbar reads this)
-      if (token) localStorage.setItem("token", token);
-      if (profile) localStorage.setItem("client", JSON.stringify(profile));
+      // ======================
+      // localStorage (keep it)
+      // ======================
+      localStorage.setItem("token", token);
+      localStorage.setItem("client", JSON.stringify(profile));
+
+      // ======================
+      // Redux (Order context)
+      // ======================
+      dispatch(
+        setClient({
+          id: profile?.id || authResult?.user?.uid || null,
+          email: profile?.email || email,
+          name:
+            profile?.name ||
+            `${profile?.firstName || ""} ${profile?.lastName || ""}`.trim() ||
+            email.split("@")[0],
+          token,
+        })
+      );
 
       toast.success("Logged in successfully");
       setLoginInputs({ email: "", password: "" });
       navigate("/");
     } catch (err) {
-      console.error("login failed:", err.code, err.message);
+      console.error("login failed:", err);
+
       if (err.code === "auth/invalid-email")
-        toast.error("Invalid email address.");
+        toast.error("Invalid email address");
       else if (err.code === "auth/user-not-found")
-        toast.error("No account found for that email.");
+        toast.error("No account found for this email");
       else if (
         err.code === "auth/wrong-password" ||
         err.code === "auth/invalid-credential"
       )
-        toast.error("Wrong password.");
+        toast.error("Wrong password");
       else toast.error("Login failed");
     } finally {
       setLoading(false);
@@ -87,6 +108,7 @@ const Login = () => {
 
   const cardBg =
     theme === "dark" ? "bg-gray-800 text-gray-50" : "bg-white text-gray-900";
+
   const inputBg =
     theme === "dark"
       ? "bg-gray-700/40 text-gray-50 placeholder-gray-300"
@@ -160,8 +182,8 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 rounded-md mt-2"
             disabled={loading}
+            className="w-full bg-indigo-600 text-white py-2 rounded-md mt-2"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
