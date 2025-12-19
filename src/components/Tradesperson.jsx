@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import api from "../services/api";
 import { addService } from "../store/orderSlice";
+import { useTranslation } from "react-i18next";
 
 const tradeServiceMap = {
   "electric technician": "Electrical",
@@ -11,6 +12,8 @@ const tradeServiceMap = {
 };
 
 const Tradesperson = () => {
+  const {t}  = useTranslation();
+
   const { id } = useParams();
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme.mode);
@@ -88,7 +91,7 @@ const Tradesperson = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        Loading...
+       {t(" Loading...")}
       </div>
     );
   }
@@ -100,7 +103,6 @@ const Tradesperson = () => {
       </div>
     );
   }
-
   return (
     <section
       className={`min-h-screen py-10 ${
@@ -120,11 +122,11 @@ const Tradesperson = () => {
           <p>📞 {person.phone}</p>
           <p>✉️ {person.email}</p>
 
-          <p className="mt-3">⭐ Current rating: {person.rating}</p>
+          <p className="mt-3">⭐ {t("Current rating")}: {person.rating}</p>
 
           <div className="mt-4">
             <label className="block mb-1 font-medium">
-              Rate this tradesperson
+              {t("Rate this tradesperson")}
             </label>
             <select
               value={rating}
@@ -146,11 +148,11 @@ const Tradesperson = () => {
 
         {/* ========== SERVICES ========== */}
         <section>
-          <h2 className="text-xl font-semibold mb-4">Services</h2>
+          <h2 className="text-xl font-semibold mb-4">{t("Services")}</h2>
 
           {services.length === 0 ? (
             <p className="text-gray-400">
-              No services available for this tradesperson.
+             {t(" No services available for this tradesperson.")}
             </p>
           ) : (
             <div className="grid md:grid-cols-2 gap-6">
@@ -183,7 +185,7 @@ const Tradesperson = () => {
                     }
                     className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-md"
                   >
-                    Add to Order
+                   {t(" Add to Order")}
                   </button>
                 </div>
               ))}

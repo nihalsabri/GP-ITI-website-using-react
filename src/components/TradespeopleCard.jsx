@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { Star, Phone, Mail, Calendar } from "lucide-react";
 import { useSelector } from "react-redux";
+import { useTranslation } from 'react-i18next';
 
 const TradespeopleCard = ({
   id,
@@ -15,7 +16,7 @@ const TradespeopleCard = ({
   imageUrl,
 }) => {
   const theme = useSelector((state) => state.theme.mode);
-
+  const { t } = useTranslation();
   return (
     <Link to={`/tradespeople/${id}`} className="block h-full">
       <div
@@ -64,7 +65,7 @@ const TradespeopleCard = ({
             {/* Experience */}
             {experience !== undefined && (
               <p className="text-sm opacity-80 truncate">
-                🛠 Experience: {experience} years
+                🛠 {t("Experience")}: {experience} years
               </p>
             )}
 
@@ -88,7 +89,7 @@ const TradespeopleCard = ({
                 <div className="flex items-center gap-2 opacity-70 min-w-0">
                   <Calendar className="w-4 h-4 shrink-0" />
                   <span className="truncate">
-                    Joined {new Date(createdAt).toLocaleDateString()}
+                   {t("Joined")} {new Date(createdAt).toLocaleDateString()}
                   </span>
                 </div>
               )}

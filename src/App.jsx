@@ -1,8 +1,6 @@
-import { Outlet } from "react-router";
+import { Outlet } from "react-router-dom";
 import { ThemeContext } from "./context/theme";
 
-import Footer from "./components/Footer";
-import Home from "./components/Home";
 import Navbar from "./components/Navbar";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -17,7 +15,8 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Search from "./components/Search";
 import Tradesperson from "./components/Tradesperson";
-
+import Home from "./components/home";
+import { Suspense } from "react";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -75,16 +74,19 @@ const router = createBrowserRouter([
 
 function App() {
   const theme = useSelector((state) => state.theme.mode);
+
   return (
-    <div
-      className={`${
-        theme === "dark"
-          ? "bg-gray-900 text-white"
-          : "text-gray-900 bg-gray-100"
-      } min-h-screen `}
-    >
-      <RouterProvider router={router} />
-    </div>
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+      <div
+        className={`${
+          theme === "dark"
+            ? "bg-gray-900 text-white"
+            : "text-gray-900 bg-gray-100"
+        } min-h-screen `}
+      >
+        <RouterProvider router={router} />
+      </div>
+    </Suspense>
   );
 }
 

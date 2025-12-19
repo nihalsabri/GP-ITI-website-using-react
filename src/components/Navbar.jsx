@@ -5,8 +5,9 @@ import { setThemeMode } from "../store/themeSlice";
 import { NavLink, Link, useNavigate } from "react-router-dom"; // <- use react-router-dom
 import { GlobeIcon, Moon, Sun } from "lucide-react";
 import { userLogout } from "../services/auth";
-
+import { useTranslation } from 'react-i18next';
 const Navbar = () => {
+const { t, i18n } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [avatarOpen, setAvatarOpen] = useState(false); // <- avatar dropdown state
 
@@ -81,19 +82,19 @@ const Navbar = () => {
           {/* Desktop */}
           <div className="hidden md:flex md:items-center md:gap-6">
             <NavLink to="/" className={linkClass}>
-              Home
+              {t("Home")}
             </NavLink>
             <NavLink to="/about" className={linkClass}>
-              About
-            </NavLink>
+   {t("About")}
+               </NavLink>
             <NavLink to="/services" className={linkClass}>
-              Services
+               {t("Services")}
             </NavLink>
             <NavLink to="/tradespeople" className={linkClass}>
-              Tradespeople
+                 {t("Tradespeople")}
             </NavLink>
             <NavLink to="/contact" className={linkClass}>
-              Contact
+                 {t("Contact")}
             </NavLink>
           </div>
 
@@ -115,6 +116,12 @@ const Navbar = () => {
 
             {/* Language */}
             <button
+
+              onClick={() => {
+    const newLang = i18n.language === 'en' ? 'ar' : 'en';
+    i18n.changeLanguage(newLang);
+    // document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
+  }}
               className={`px-3 py-2 hidden md:flex rounded-md border text-sm transition transform hover:scale-105 shadow-sm
                 ${
                   theme === "dark"
@@ -132,8 +139,7 @@ const Navbar = () => {
                 to="/login"
                 className="hidden md:inline-block text-center px-3 py-2 rounded-md bg-indigo-600 text-white"
               >
-                Login / Register
-              </Link>
+  {t("Register")}              </Link>
             )}
 
             {/* Avatar مش هيظهر غير لو في توكن ف الستوراج */}
@@ -168,14 +174,13 @@ const Navbar = () => {
                         className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
                         onClick={() => setAvatarOpen(false)}
                       >
-                        Account
-                      </Link>
+  {t("Account")}                      </Link>
                       <Link
                         to="/settings"
                         className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
                         onClick={() => setAvatarOpen(false)}
                       >
-                        Settings
+                          {t("Settings")}
                       </Link>
                       <button
                         onClick={async () => {
@@ -184,8 +189,7 @@ const Navbar = () => {
                         }}
                         className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
-                        Logout
-                      </button>
+  {t("Logout")}                      </button>
                     </div>
                   </div>
                 )}
@@ -241,19 +245,19 @@ const Navbar = () => {
         >
           <div className="px-4 pt-4 pb-6 space-y-3">
             <NavLink to="/" end className={mobileLinkClass}>
-              Home
+                {t("Home")}
             </NavLink>
             <NavLink to="/about" className={mobileLinkClass}>
-              About Us
-            </NavLink>
+{t("About Us")}            </NavLink>
             <NavLink to="/services" className={mobileLinkClass}>
-              Services
+                {t("Services")}
             </NavLink>
             <NavLink to="/tradespeople" className={linkClass}>
-              Tradespeople
+                {t("Tradespeople")}
             </NavLink>
             <NavLink to="/contact" className={mobileLinkClass}>
-              Contact
+             {t("Contact")}
+
             </NavLink>
 
             {/* Divider + bottom section LIKE YOU HAD IT */}
@@ -264,7 +268,7 @@ const Navbar = () => {
                   to="/login"
                   className="text-center px-4 py-2 rounded-md bg-indigo-600 text-white shadow hover:bg-indigo-700 transition"
                 >
-                  Login / Register
+                  {t("Login / Register")}
                 </Link>
               )}
 
@@ -282,6 +286,11 @@ const Navbar = () => {
                 </button>
 
                 <button
+                 onClick={() => {
+    const newLang = i18n.language === 'en' ? 'ar' : 'en';
+    i18n.changeLanguage(newLang);
+    document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
+  }}
                   className={`px-3 py-2 rounded-md border ${
                     theme === "dark"
                       ? "border-gray-700 bg-gray-800 text-gray-200"
@@ -298,7 +307,7 @@ const Navbar = () => {
                   onClick={handleLogout}
                   className="px-4 py-2 rounded-md bg-red-600 text-white shadow hover:bg-red-700 transition w-full"
                 >
-                  Logout
+                  {t("Logout")}
                 </button>
               )}
             </div>

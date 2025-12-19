@@ -3,8 +3,12 @@ import React, { useEffect, useState } from "react";
 import api from "../services/api";
 import TradespeopleCard from "../components/TradespeopleCard";
 import { useSelector } from "react-redux";
+import { useTranslation } from 'react-i18next';
+
 
 const Tradespeople = () => {
+  const { t } = useTranslation();
+  
   const [tradespeople, setTradespeople] = useState([]);
   const [selectedTrade, setSelectedTrade] = useState(""); // filter
 
@@ -64,19 +68,19 @@ const Tradespeople = () => {
   `}
           >
             <option className="bg-gray-900 text-white" value="">
-              All Trades
+             {t(" All Trades")}
             </option>
             <option
               className="bg-gray-900 text-white"
               value="electric technician"
             >
-              Electrician
+              {t("Electrician")}
             </option>
             <option className="bg-gray-900 text-white" value="plumber">
-              Plumber
+              {t("Plumber")}
             </option>
             <option className="bg-gray-900 text-white" value="carpenter">
-              Carpenter
+              {t("Carpenter")}
             </option>
           </select>
         </div>
@@ -102,7 +106,7 @@ const Tradespeople = () => {
         {/* Empty state */}
         {filteredTradespeople.length === 0 && (
           <p className="text-center text-gray-500 mt-10">
-            No tradespeople found.
+            {t("No tradespeople found.")}
           </p>
         )}
       </div>
