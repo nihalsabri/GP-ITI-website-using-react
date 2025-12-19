@@ -20,9 +20,9 @@ const Tradesperson = () => {
   const [rating, setRating] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // ========================
-  // Fetch tradesperson
-  // ========================
+  /* ========================
+     Fetch tradesperson
+  ======================== */
   useEffect(() => {
     if (!id) return;
 
@@ -36,16 +36,13 @@ const Tradesperson = () => {
           setRating(res.data.rating || 0);
         }
       })
-      .catch((err) => {
-        console.error("Error fetching tradesperson:", err);
-        setPerson(null);
-      })
+      .catch(() => setPerson(null))
       .finally(() => setLoading(false));
   }, [id]);
 
-  // ========================
-  // Set tradesperson in Redux
-  // ========================
+  /* ========================
+     Save tradesperson in Redux
+  ======================== */
   useEffect(() => {
     if (!person) return;
 
@@ -58,63 +55,46 @@ const Tradesperson = () => {
     );
   }, [person, dispatch]);
 
-  // ========================
-  // Fetch services by trade
-  // ========================
+  /* ========================
+     Fetch services by trade
+  ======================== */
   useEffect(() => {
     if (!person?.trade) return;
 
     const mappedCategory = tradeServiceMap[person.trade];
     if (!mappedCategory) return;
 
-    api
-      .get("/services.json")
-      .then((res) => {
-        const data = res.data || {};
-        const servicesArray = Object.values(data);
-
-        const filtered = servicesArray.filter(
-          (service) => service.category === mappedCategory
-        );
-
-        setServices(filtered);
-      })
-      .catch((err) => console.error("Error fetching services:", err));
+    api.get("/services.json").then((res) => {
+      const data = res.data || {};
+      const list = Object.values(data);
+      setServices(list.filter((s) => s.category === mappedCategory));
+    });
   }, [person]);
 
-  // ========================
-  // Submit rating
-  // ========================
+  /* ========================
+     Submit rating
+  ======================== */
   const submitRating = async (value) => {
     setRating(value);
-
-    try {
-      await api.patch(`/Tradespeople/${id}.json`, {
-        rating: Number(value),
-      });
-    } catch (err) {
-      console.error("Rating update failed:", err);
-    }
+    await api.patch(`/Tradespeople/${id}.json`, { rating: Number(value) });
   };
 
-  // ========================
-  // Guards
-  // ========================
-  if (loading) {
+  /* ========================
+     Guards
+  ======================== */
+  if (loading)
     return (
       <div className="min-h-screen flex items-center justify-center">
         Loading...
       </div>
     );
-  }
 
-  if (!person) {
+  if (!person)
     return (
       <div className="min-h-screen flex items-center justify-center">
         Tradesperson not found.
       </div>
     );
-  }
 
   return (
     <section
@@ -123,7 +103,7 @@ const Tradesperson = () => {
       }`}
     >
       <div className="max-w-5xl mx-auto px-4 space-y-10">
-        {/* ========== PROFILE ========== */}
+        {/* ================= PROFILE ================= */}
         <div
           className={`p-6 rounded-xl shadow ${
             theme === "dark" ? "bg-gray-800" : "bg-white"
@@ -137,6 +117,28 @@ const Tradesperson = () => {
 
           <p className="mt-3">⭐ Current rating: {person.rating ?? 0}</p>
 
+          {/* Areas */}
+          {Array.isArray(person.areas) && person.areas.length > 0 && (
+            <div className="mt-3">
+              <p className="font-medium mb-1">📍 Areas served:</p>
+              <div className="flex flex-wrap gap-2">
+                {person.areas.map((area, i) => (
+                  <span
+                    key={i}
+                    className={`px-3 py-1 rounded-full text-sm ${
+                      theme === "dark"
+                        ? "bg-gray-700"
+                        : "bg-gray-200 text-gray-800"
+                    }`}
+                  >
+                    {area}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Rating */}
           <div className="mt-4">
             <label className="block mb-1 font-medium">
               Rate this tradesperson
@@ -159,52 +161,90 @@ const Tradesperson = () => {
           </div>
         </div>
 
-        {/* ========== SERVICES ========== */}
+        {/* ================= SERVICES ================= */}
         <section>
           <h2 className="text-xl font-semibold mb-4">Services</h2>
 
-          {services.length === 0 ? (
-            <p className="text-gray-400">
-              No services available for this tradesperson.
-            </p>
-          ) : (
-            <div className="grid md:grid-cols-2 gap-6">
-              {services.map((service) => (
-                <div
-                  key={service.id}
-                  className={`p-5 rounded-xl border ${
-                    theme === "dark"
-                      ? "bg-gray-800 border-gray-700"
-                      : "bg-white border-gray-200"
-                  }`}
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* 🔥 Special Service */}
+            {person.specialService && (
+              <div
+                className={`p-5 rounded-xl border-2 ${
+                  theme === "dark"
+                    ? "bg-gray-800 border-indigo-500"
+                    : "bg-white border-indigo-400"
+                }`}
+              >
+                <span className="text-xs uppercase text-indigo-500 font-semibold">
+                  Exclusive Service
+                </span>
+
+                <h3 className="font-semibold text-lg mt-1">
+                  {person.specialService.name}
+                </h3>
+
+                <p className="text-sm text-gray-400 mb-3">
+                  {person.specialService.description}
+                </p>
+
+                <p className="font-bold mb-4">
+                  {person.specialService.price} EGP
+                </p>
+
+                <button
+                  onClick={() =>
+                    dispatch(
+                      addService({
+                        id: `special-${person.id}`,
+                        name: person.specialService.name,
+                        price: person.specialService.price,
+                        category: "Special",
+                      })
+                    )
+                  }
+                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-md"
                 >
-                  <h3 className="font-semibold text-lg">{service.name}</h3>
+                  Add to Order
+                </button>
+              </div>
+            )}
 
-                  <p className="text-sm text-gray-400 mb-3">
-                    {service.description}
-                  </p>
+            {/* Regular services */}
+            {services.map((service) => (
+              <div
+                key={service.id}
+                className={`p-5 rounded-xl border ${
+                  theme === "dark"
+                    ? "bg-gray-800 border-gray-700"
+                    : "bg-white border-gray-200"
+                }`}
+              >
+                <h3 className="font-semibold text-lg">{service.name}</h3>
 
-                  <p className="font-bold mb-4">{service.price} EGP</p>
+                <p className="text-sm text-gray-400 mb-3">
+                  {service.description}
+                </p>
 
-                  <button
-                    onClick={() =>
-                      dispatch(
-                        addService({
-                          id: service.id,
-                          name: service.name,
-                          price: service.price,
-                          category: service.category,
-                        })
-                      )
-                    }
-                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-md"
-                  >
-                    Add to Order
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+                <p className="font-bold mb-4">{service.price} EGP</p>
+
+                <button
+                  onClick={() =>
+                    dispatch(
+                      addService({
+                        id: service.id,
+                        name: service.name,
+                        price: service.price,
+                        category: service.category,
+                      })
+                    )
+                  }
+                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-md"
+                >
+                  Add to Order
+                </button>
+              </div>
+            ))}
+          </div>
         </section>
       </div>
     </section>
