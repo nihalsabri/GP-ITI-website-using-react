@@ -17,6 +17,9 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Search from "./components/Search";
 import Tradesperson from "./components/Tradesperson";
+import UserProfile from "./components/UserProfile";
+import Orders from "./components/Orders";
+import OrderDetails from "./components/OrderDetails";
 
 const router = createBrowserRouter([
   {
@@ -61,12 +64,23 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register />,
       },
+      {
+        path: "profile",
+        element: <UserProfile />,
+      },
+      {
+        path: "orders",
+        element: <Orders />,
+      },
+      {
+        path: "orders/:id",
+        element: <OrderDetails />,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
+      },
     ],
-  },
-
-  {
-    path: "*",
-    element: <NotFound />,
   },
 ]);
 
