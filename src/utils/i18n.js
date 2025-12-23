@@ -19,6 +19,50 @@ const resources = {
       loading: "Loading...",
       save: "Save",
 
+      /* ================= JOBS ================= */
+
+      jobs: {
+        electrician: "Electrician",
+        windows: "Windows, doors & conservatory",
+        gas: "Gas engineer",
+        tiling: "Tiling",
+        building: "Building",
+        roofing: "Roofing",
+        plumber: "Plumber",
+        carpentry: "Carpentry",
+        painting: "Painting & Decorating",
+      },
+      landing: {
+        hero: {
+          title: "Find a trusted tradesperson online",
+          subtitle: "Thousands of professionals ready to help you",
+          searchPlaceholder: "Trade e.g. Plumber, Electrician",
+        },
+        categories: {
+          title: "Search by Category",
+          electrician: "Electrician",
+          plumber: "Plumber",
+          carpenter: "Carpenter",
+          locksmith: "Locksmith",
+          decorator: "Decorator",
+          roofing: "Roofing",
+          building: "Building",
+          garages: "Garages",
+          landscaper: "Landscaper",
+        },
+        popular: {
+          title: "Popular Jobs",
+        },
+        jobs: {
+          electrician: "Electrician",
+          windows: "Windows & Doors",
+          gas: "Gas Engineer",
+          tiling: "Tiling",
+          building: "Building",
+          roofing: "Roofing",
+        },
+      },
+
       /* ================= NAVBAR ================= */
       "Login / Register": "Login / Register",
       Login: "Login",
@@ -201,6 +245,51 @@ const resources = {
       Close: "إغلاق",
       loading: "جاري التحميل...",
       save: "حفظ",
+
+      /* ================= JOBS ================= */
+
+      jobs: {
+        electrician: "كهربائي",
+        windows: "نوافذ وأبواب وصوب زجاجية",
+        gas: "فني غاز",
+        tiling: "تركيب بلاط",
+        building: "أعمال بناء",
+        roofing: "أعمال الأسقف",
+        plumber: "سباك",
+        carpentry: "نجار",
+        painting: "دهانات وتشطيبات",
+      },
+
+      landing: {
+        hero: {
+          title: "اعثر على فني موثوق عبر الإنترنت",
+          subtitle: "آلاف الفنيين المحترفين جاهزون لمساعدتك",
+          searchPlaceholder: "المهنة مثل: سباك، كهربائي",
+        },
+        categories: {
+          title: "ابحث حسب الفئة",
+          electrician: "كهربائي",
+          plumber: "سباك",
+          carpenter: "نجار",
+          locksmith: "صانع أقفال",
+          decorator: "دهّان",
+          roofing: "أعمال الأسقف",
+          building: "بناء",
+          garages: "جراجات",
+          landscaper: "تنسيق حدائق",
+        },
+        popular: {
+          title: "الأعمال الشائعة",
+        },
+        jobs: {
+          electrician: "كهربائي",
+          windows: "شبابيك وأبواب",
+          gas: "فني غاز",
+          tiling: "تركيب بلاط",
+          building: "أعمال بناء",
+          roofing: "أعمال الأسقف",
+        },
+      },
 
       /* ================= NAVBAR ================= */
       "Login / Register": "تسجيل الدخول / إنشاء حساب",
