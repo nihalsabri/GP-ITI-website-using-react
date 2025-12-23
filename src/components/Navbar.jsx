@@ -80,9 +80,9 @@ const Navbar = () => {
             <NavLink to="/about" className={linkClass}>
               {t("About")}
             </NavLink>
-            <NavLink to="/services" className={linkClass}>
+            {/* <NavLink to="/services" className={linkClass}>
               {t("Services")}
-            </NavLink>
+            </NavLink> */}
             <NavLink to="/tradespeople" className={linkClass}>
               {t("Tradespeople")}
             </NavLink>
@@ -186,9 +186,9 @@ const Navbar = () => {
           <NavLink to="/about" onClick={() => setMobileOpen(false)}>
             {t("About")}
           </NavLink>
-          <NavLink to="/services" onClick={() => setMobileOpen(false)}>
+          {/* <NavLink to="/services" onClick={() => setMobileOpen(false)}>
             {t("Services")}
-          </NavLink>
+          </NavLink> */}
           <NavLink to="/tradespeople" onClick={() => setMobileOpen(false)}>
             {t("Tradespeople")}
           </NavLink>
