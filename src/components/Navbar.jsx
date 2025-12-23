@@ -55,7 +55,7 @@ const Navbar = () => {
     }`;
 
   return (
-    <nav className={`sticky top-0 z-40 ${navClass}`}>
+    <nav className={`py-6 sticky top-0 z-40 ${navClass}`}>
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
