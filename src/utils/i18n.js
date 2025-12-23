@@ -291,6 +291,16 @@ const resources = {
         },
       },
 
+      nav: {
+        home: "الرئيسية",
+        directory: "الدليل",
+        about: "من نحن",
+        awards: "جوائز SME",
+        homeowner: "صاحب منزل",
+        tradesperson: "فني",
+        logout: "تسجيل الخروج",
+      },
+
       /* ================= NAVBAR ================= */
       "Login / Register": "تسجيل الدخول / إنشاء حساب",
       Login: "تسجيل الدخول",
