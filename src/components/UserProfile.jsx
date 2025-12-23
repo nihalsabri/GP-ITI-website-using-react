@@ -1,22 +1,22 @@
-// src/components/UserProfile.jsx
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import api from "../services/api";
 import { toast } from "react-hot-toast";
-import { User, Mail, Phone, Image, Edit2, X } from "lucide-react";
+import { User, Mail, Phone, MapPin, Edit2, X } from "lucide-react";
 
 const UserProfile = () => {
   const theme = useSelector((state) => state.theme.mode);
-
   const storedClient = JSON.parse(localStorage.getItem("client"));
 
   const [client, setClient] = useState(null);
   const [orders, setOrders] = useState([]);
   const [editing, setEditing] = useState(false);
+
   const [form, setForm] = useState({
     name: "",
     phone: "",
     profilePic: "",
+    address: "",
   });
 
   // ================= FETCH CLIENT =================
@@ -29,10 +29,12 @@ const UserProfile = () => {
         if (!res.data) return;
 
         setClient(res.data);
+
         setForm({
           name: res.data.name || "",
           phone: res.data.phone || "",
           profilePic: res.data.profilePic || "",
+          address: res.data.address || "",
         });
 
         const ordersArray = res.data.orders
@@ -51,6 +53,7 @@ const UserProfile = () => {
         name: form.name,
         phone: form.phone,
         profilePic: form.profilePic,
+        address: form.address,
       });
 
       setClient((prev) => ({ ...prev, ...form }));
@@ -105,6 +108,9 @@ const UserProfile = () => {
             <div>
               <h1 className="text-2xl font-bold">{client.name}</h1>
               <p className="opacity-70">{client.email}</p>
+              <p className="text-sm opacity-60 mt-1">
+                {orders.length} orders placed
+              </p>
             </div>
           </div>
 
@@ -112,10 +118,22 @@ const UserProfile = () => {
             <p className="flex items-center gap-2">
               <Phone size={16} /> {client.phone || "—"}
             </p>
+
             <p className="flex items-center gap-2">
               <Mail size={16} /> {client.email}
             </p>
+
+            <p className="flex items-center gap-2 md:col-span-2">
+              <MapPin size={16} />
+              {client.address || "No address provided"}
+            </p>
           </div>
+
+          {client.createdAt && (
+            <p className="text-xs opacity-60 mt-4">
+              Member since {new Date(client.createdAt).toLocaleDateString()}
+            </p>
+          )}
         </div>
 
         {/* ================= ORDERS ================= */}
@@ -140,9 +158,9 @@ const UserProfile = () => {
                   <div className="flex justify-between items-center mb-2">
                     <div>
                       <p className="font-semibold">
-                        👨‍🔧 {order.tradespersonName}
+                        👨‍🔧 {order.tradespersonName || "Tradesperson"}
                       </p>
-                      <p className="text-sm opacity-70">{order.trade}</p>
+                      <p className="text-sm opacity-70">{order.trade || ""}</p>
                     </div>
 
                     <span
@@ -217,6 +235,13 @@ const UserProfile = () => {
                 placeholder="Phone"
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              />
+
+              <input
+                className="w-full px-3 py-2 rounded border bg-transparent"
+                placeholder="Address"
+                value={form.address}
+                onChange={(e) => setForm({ ...form, address: e.target.value })}
               />
 
               <input
