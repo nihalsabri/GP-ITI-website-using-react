@@ -75,12 +75,11 @@ const Login = () => {
       // ======================
       dispatch(
         setClient({
-          id: profile?.id || authResult?.user?.uid || null,
+          id: profile?.id || authResult?.user?.uid,
+          name: profile?.name || `${profile?.firstName} ${profile?.lastName}`,
           email: profile?.email || email,
-          name:
-            profile?.name ||
-            `${profile?.firstName || ""} ${profile?.lastName || ""}`.trim() ||
-            email.split("@")[0],
+          address: profile?.address || "",
+          profilePic: profile?.profilePic || "",
           token,
         })
       );
