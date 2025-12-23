@@ -6,8 +6,11 @@ import { Toaster, toast } from "react-hot-toast";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { setClient } from "../store/orderSlice";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
+  const { t, i18n } = useTranslation();
+
   const [loginInputs, setLoginInputs] = useState({ email: "", password: "" });
   const [inputsError, setInputsError] = useState({
     emailError: "",
@@ -20,6 +23,8 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const dir = i18n.language === "ar" ? "rtl" : "ltr";
+
   const handleChange = (e) => {
     setLoginInputs((s) => ({ ...s, [e.target.name]: e.target.value }));
 
@@ -27,7 +32,7 @@ const Login = () => {
       setInputsError((s) => ({
         ...s,
         emailError: !e.target.value.includes("@")
-          ? "Please enter a valid email"
+          ? t("Please enter a valid email")
           : "",
       }));
     }
@@ -37,7 +42,7 @@ const Login = () => {
         ...s,
         passwordError:
           e.target.value.length < 8
-            ? "Password must be at least 8 characters"
+            ? t("Password must be at least 8 characters")
             : "",
       }));
     }
@@ -50,12 +55,12 @@ const Login = () => {
     const password = loginInputs.password.trim();
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      toast.error("Please enter a valid email address");
+      toast.error(t("Please enter a valid email address"));
       return;
     }
 
     if (password.length < 8) {
-      toast.error("Password must be at least 8 characters");
+      toast.error(t("Password must be at least 8 characters"));
       return;
     }
 
@@ -65,7 +70,7 @@ const Login = () => {
       const { authResult, profile, token } = await userLogin(email, password);
 
       // ======================
-      // localStorage (keep it)
+      // localStorage
       // ======================
       localStorage.setItem("token", token);
       localStorage.setItem("client", JSON.stringify(profile));
@@ -76,7 +81,9 @@ const Login = () => {
       dispatch(
         setClient({
           id: profile?.id || authResult?.user?.uid,
-          name: profile?.name || `${profile?.firstName} ${profile?.lastName}`,
+          name:
+            profile?.name ||
+            `${profile?.firstName || ""} ${profile?.lastName || ""}`.trim(),
           email: profile?.email || email,
           address: profile?.address || "",
           profilePic: profile?.profilePic || "",
@@ -84,22 +91,22 @@ const Login = () => {
         })
       );
 
-      toast.success("Logged in successfully");
+      toast.success(t("Logged in successfully"));
       setLoginInputs({ email: "", password: "" });
       navigate("/");
     } catch (err) {
       console.error("login failed:", err);
 
       if (err.code === "auth/invalid-email")
-        toast.error("Invalid email address");
+        toast.error(t("Invalid email address"));
       else if (err.code === "auth/user-not-found")
-        toast.error("No account found for this email");
+        toast.error(t("No account found for this email"));
       else if (
         err.code === "auth/wrong-password" ||
         err.code === "auth/invalid-credential"
       )
-        toast.error("Wrong password");
-      else toast.error("Login failed");
+        toast.error(t("Wrong password"));
+      else toast.error(t("Login failed"));
     } finally {
       setLoading(false);
     }
@@ -114,7 +121,10 @@ const Login = () => {
       : "bg-gray-50 text-gray-900 placeholder-gray-500";
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center py-10 px-4">
+    <div
+      dir={dir}
+      className="min-h-[70vh] flex items-center justify-center py-10 px-4"
+    >
       <div className={`w-full max-w-md rounded-2xl shadow-xl border ${cardBg}`}>
         <div className="flex items-center gap-4 px-6 py-6">
           <div
@@ -125,21 +135,23 @@ const Login = () => {
             AP
           </div>
           <div>
-            <h2 className="text-lg font-semibold">Welcome back</h2>
-            <p className="text-sm text-gray-400">Login to your account</p>
+            <h2 className="text-lg font-semibold">{t("Welcome back")}</h2>
+            <p className="text-sm text-gray-400">
+              {t("Login to your account")}
+            </p>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="px-6 pb-6 space-y-4">
           <div>
-            <label className="text-sm font-medium">Email</label>
+            <label className="text-sm font-medium">{t("Email")}</label>
             <div
               className={`flex items-center border rounded-md px-3 py-2 ${inputBg}`}
             >
               <Mail size={16} />
               <Input
                 name="email"
-                placeholder="Email"
+                placeholder={t("Email")}
                 value={loginInputs.email}
                 onChange={handleChange}
                 className="w-full bg-transparent outline-none"
@@ -151,7 +163,7 @@ const Login = () => {
           </div>
 
           <div>
-            <label className="text-sm font-medium">Password</label>
+            <label className="text-sm font-medium">{t("Password")}</label>
             <div
               className={`flex items-center border rounded-md px-3 py-2 ${inputBg}`}
             >
@@ -159,7 +171,7 @@ const Login = () => {
               <Input
                 name="password"
                 type={showPassword ? "text" : "password"}
-                placeholder="Password"
+                placeholder={t("Password")}
                 value={loginInputs.password}
                 onChange={handleChange}
                 className="w-full bg-transparent outline-none"
@@ -184,13 +196,13 @@ const Login = () => {
             disabled={loading}
             className="w-full bg-indigo-600 text-white py-2 rounded-md mt-2"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? t("Logging in...") : t("Login")}
           </button>
 
           <p className="text-center text-sm mt-3">
-            Don't have an account?{" "}
+            {t("Don't have an account?")}{" "}
             <Link to="/register" className="text-indigo-400">
-              Register
+              {t("Register")}
             </Link>
           </p>
         </form>

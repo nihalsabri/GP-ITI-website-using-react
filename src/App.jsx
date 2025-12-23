@@ -20,6 +20,7 @@ import Tradesperson from "./components/Tradesperson";
 import UserProfile from "./components/UserProfile";
 import Orders from "./components/Orders";
 import OrderDetails from "./components/OrderDetails";
+import TradesmenLanding from "./components/LandingPage";
 
 const router = createBrowserRouter([
   {
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <LandingPage />,
+        element: <TradesmenLanding />,
       },
       {
         path: "services",

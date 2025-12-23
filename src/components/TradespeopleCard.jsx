@@ -1,7 +1,7 @@
-// src/components/TradespeopleCard.jsx
 import { Link } from "react-router-dom";
 import { Star, Phone, Mail, Calendar } from "lucide-react";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const TradespeopleCard = ({
   id,
@@ -15,6 +15,17 @@ const TradespeopleCard = ({
   imageUrl,
 }) => {
   const theme = useSelector((state) => state.theme.mode);
+  const { t } = useTranslation();
+
+  // ✅ Map backend trade values → i18n keys
+  const tradeMap = {
+    "electric technician": "Electrician",
+    electrician: "Electrician",
+    plumber: "Plumber",
+    carpenter: "Carpenter",
+  };
+
+  const translatedTrade = tradeMap[trade?.toLowerCase()] || trade;
 
   return (
     <Link to={`/tradespeople/${id}`} className="block h-full">
@@ -27,7 +38,7 @@ const TradespeopleCard = ({
         }`}
       >
         <div className="flex gap-5 items-start min-w-0">
-          {/* Avatar / Image */}
+          {/* Avatar */}
           <div className="w-28 h-28 rounded-xl overflow-hidden bg-gray-200 flex-shrink-0">
             {imageUrl ? (
               <img
@@ -45,50 +56,48 @@ const TradespeopleCard = ({
           {/* Content */}
           <div className="flex-1 min-w-0 space-y-2">
             {/* Name */}
-            <h3 className="text-xl font-semibold group-hover:text-indigo-500 transition truncate">
-              {name}
-            </h3>
+            <h3 className="text-xl font-semibold truncate">{name}</h3>
 
-            {/* Trade */}
+            {/* ✅ Trade (translated) */}
             <p className="text-indigo-500 text-sm font-medium truncate">
-              {trade}
+              {t(translatedTrade)}
             </p>
 
             {/* Rating */}
             <div className="flex items-center gap-1 text-sm">
-              <Star className="w-4 h-4 text-yellow-400 fill-yellow-400 shrink-0" />
+              <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
               <span className="font-medium">{rating ?? 0}</span>
-              <span className="opacity-60">(rating)</span>
+              <span className="opacity-60">({t("rating")})</span>
             </div>
 
             {/* Experience */}
             {experience !== undefined && (
               <p className="text-sm opacity-80 truncate">
-                🛠 Experience: {experience} years
+                🛠 {t("Experience")}: {experience} {t("years")}
               </p>
             )}
 
             {/* Contact */}
             <div className="pt-2 space-y-1 text-sm min-w-0">
               {phone && (
-                <div className="flex items-center gap-2 min-w-0">
-                  <Phone className="w-4 h-4 text-indigo-500 shrink-0" />
+                <div className="flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-indigo-500" />
                   <span className="truncate">{phone}</span>
                 </div>
               )}
 
               {email && (
-                <div className="flex items-center gap-2 min-w-0">
-                  <Mail className="w-4 h-4 text-indigo-500 shrink-0" />
+                <div className="flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-indigo-500" />
                   <span className="truncate">{email}</span>
                 </div>
               )}
 
               {createdAt && (
-                <div className="flex items-center gap-2 opacity-70 min-w-0">
-                  <Calendar className="w-4 h-4 shrink-0" />
+                <div className="flex items-center gap-2 opacity-70">
+                  <Calendar className="w-4 h-4" />
                   <span className="truncate">
-                    Joined {new Date(createdAt).toLocaleDateString()}
+                    {t("Joined")} {new Date(createdAt).toLocaleDateString()}
                   </span>
                 </div>
               )}

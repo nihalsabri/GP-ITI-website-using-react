@@ -4,8 +4,10 @@ import { setThemeMode } from "../store/themeSlice";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { GlobeIcon, Moon, Sun } from "lucide-react";
 import { userLogout } from "../services/auth";
+import { useTranslation } from "react-i18next";
 
 const Navbar = () => {
+  const { t, i18n } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [avatarOpen, setAvatarOpen] = useState(false);
 
@@ -24,6 +26,11 @@ const Navbar = () => {
 
   const toggleTheme = () => {
     dispatch(setThemeMode(theme === "light" ? "dark" : "light"));
+  };
+
+  const toggleLang = () => {
+    const newLang = i18n.language === "en" ? "ar" : "en";
+    i18n.changeLanguage(newLang);
   };
 
   const handleLogout = async () => {
@@ -47,9 +54,6 @@ const Navbar = () => {
         : "text-gray-700 hover:text-indigo-700"
     }`;
 
-  const mobileLinkClass = ({ isActive }) =>
-    `block py-2 text-sm ${isActive ? "text-indigo-500 font-semibold" : ""}`;
-
   return (
     <nav className={`sticky top-0 z-40 ${navClass}`}>
       <div className="max-w-6xl mx-auto px-4">
@@ -71,43 +75,36 @@ const Navbar = () => {
           {/* Desktop links */}
           <div className="hidden md:flex gap-6">
             <NavLink to="/" className={linkClass}>
-              Home
+              {t("Home")}
             </NavLink>
             <NavLink to="/about" className={linkClass}>
-              About
+              {t("About")}
             </NavLink>
             <NavLink to="/services" className={linkClass}>
-              Services
+              {t("Services")}
             </NavLink>
             <NavLink to="/tradespeople" className={linkClass}>
-              Tradespeople
+              {t("Tradespeople")}
             </NavLink>
             <NavLink to="/contact" className={linkClass}>
-              Contact
+              {t("Contact")}
             </NavLink>
           </div>
 
           {/* Right */}
           <div className="flex items-center gap-3">
-            {/* Desktop Theme */}
+            {/* Theme */}
             <button
               onClick={toggleTheme}
-              className={`hidden md:flex p-2 rounded-md border ${
-                theme === "dark"
-                  ? "bg-gray-800 border-gray-700"
-                  : "bg-white border-gray-200"
-              }`}
+              className="hidden md:flex p-2 rounded-md border"
             >
               {theme === "light" ? <Sun size={18} /> : <Moon size={18} />}
             </button>
 
-            {/* Desktop Language */}
+            {/* Language */}
             <button
-              className={`hidden md:flex p-2 rounded-md border ${
-                theme === "dark"
-                  ? "bg-gray-800 border-gray-700"
-                  : "bg-white border-gray-200"
-              }`}
+              onClick={toggleLang}
+              className="hidden md:flex p-2 rounded-md border"
             >
               <GlobeIcon size={18} />
             </button>
@@ -118,13 +115,13 @@ const Navbar = () => {
                 to="/login"
                 className="hidden md:block px-3 py-2 rounded-md bg-indigo-600 text-white"
               >
-                Login / Register
+                {t("Login / Register")}
               </Link>
             )}
 
             {/* Avatar */}
             {token && (
-              <div className="relative group">
+              <div className="relative">
                 <button
                   onClick={() => setAvatarOpen((v) => !v)}
                   className="relative w-10 h-10 rounded-full border-2 border-green-500 overflow-hidden"
@@ -140,17 +137,9 @@ const Navbar = () => {
                       {fallbackLetter}
                     </div>
                   )}
-
-                  {/* Online */}
-                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-900" />
+                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white" />
                 </button>
 
-                {/* Tooltip */}
-                <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition bg-black text-white text-xs px-2 py-1 rounded">
-                  {userName}
-                </div>
-
-                {/* Dropdown */}
                 {avatarOpen && (
                   <div
                     className={`absolute right-0 mt-2 w-44 rounded-md shadow-lg ${
@@ -161,23 +150,23 @@ const Navbar = () => {
                   >
                     <Link
                       to="/profile"
-                      onClick={() => setAvatarOpen(false)}
                       className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      onClick={() => setAvatarOpen(false)}
                     >
-                      Account
+                      {t("Account")}
                     </Link>
                     <button
                       onClick={handleLogout}
                       className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                     >
-                      Logout
+                      {t("Logout")}
                     </button>
                   </div>
                 )}
               </div>
             )}
 
-            {/* Mobile button */}
+            {/* Mobile */}
             <button
               onClick={() => setMobileOpen((v) => !v)}
               className="md:hidden p-2 border rounded-md"
@@ -190,47 +179,28 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div
-          className={`md:hidden px-4 py-4 ${
-            theme === "dark" ? "bg-gray-900" : "bg-white"
-          }`}
-        >
-          <NavLink to="/" className={mobileLinkClass}>
-            Home
+        <div className="md:hidden px-4 py-4 bg-gray-900 text-white space-y-3">
+          <NavLink to="/" onClick={() => setMobileOpen(false)}>
+            {t("Home")}
           </NavLink>
-          <NavLink to="/about" className={mobileLinkClass}>
-            About
+          <NavLink to="/about" onClick={() => setMobileOpen(false)}>
+            {t("About")}
           </NavLink>
-          <NavLink to="/services" className={mobileLinkClass}>
-            Services
+          <NavLink to="/services" onClick={() => setMobileOpen(false)}>
+            {t("Services")}
           </NavLink>
-          <NavLink to="/tradespeople" className={mobileLinkClass}>
-            Tradespeople
+          <NavLink to="/tradespeople" onClick={() => setMobileOpen(false)}>
+            {t("Tradespeople")}
           </NavLink>
-          <NavLink to="/contact" className={mobileLinkClass}>
-            Contact
+          <NavLink to="/contact" onClick={() => setMobileOpen(false)}>
+            {t("Contact")}
           </NavLink>
 
-          {/* Mobile theme + language */}
-          <div className="flex gap-3 mt-4 pt-4 border-t border-gray-700/40">
-            <button
-              onClick={toggleTheme}
-              className={`flex-1 flex justify-center p-2 rounded-md border ${
-                theme === "dark"
-                  ? "bg-gray-800 border-gray-700"
-                  : "bg-white border-gray-200"
-              }`}
-            >
+          <div className="flex gap-3 pt-4 border-t border-gray-700">
+            <button onClick={toggleTheme} className="flex-1 border p-2">
               {theme === "light" ? <Sun size={16} /> : <Moon size={16} />}
             </button>
-
-            <button
-              className={`flex-1 flex justify-center p-2 rounded-md border ${
-                theme === "dark"
-                  ? "bg-gray-800 border-gray-700"
-                  : "bg-white border-gray-200"
-              }`}
-            >
+            <button onClick={toggleLang} className="flex-1 border p-2">
               <GlobeIcon size={16} />
             </button>
           </div>

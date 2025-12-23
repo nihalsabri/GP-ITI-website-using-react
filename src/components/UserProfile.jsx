@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import api from "../services/api";
 import { toast } from "react-hot-toast";
 import { User, Mail, Phone, MapPin, Edit2, X } from "lucide-react";
 
 const UserProfile = () => {
   const theme = useSelector((state) => state.theme.mode);
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === "ar";
+
   const storedClient = JSON.parse(localStorage.getItem("client"));
 
   const [client, setClient] = useState(null);
@@ -19,7 +23,7 @@ const UserProfile = () => {
     address: "",
   });
 
-  // ================= FETCH CLIENT =================
+  /* ================= FETCH CLIENT ================= */
   useEffect(() => {
     if (!storedClient?.id) return;
 
@@ -29,7 +33,6 @@ const UserProfile = () => {
         if (!res.data) return;
 
         setClient(res.data);
-
         setForm({
           name: res.data.name || "",
           phone: res.data.phone || "",
@@ -37,43 +40,34 @@ const UserProfile = () => {
           address: res.data.address || "",
         });
 
-        const ordersArray = res.data.orders
-          ? Object.values(res.data.orders)
-          : [];
-
-        setOrders(ordersArray);
+        setOrders(res.data.orders ? Object.values(res.data.orders) : []);
       })
-      .catch(() => toast.error("Failed to load profile"));
-  }, [storedClient?.id]);
+      .catch(() => toast.error(t("profile.loadError")));
+  }, [storedClient?.id, t]);
 
-  // ================= SAVE PROFILE =================
+  /* ================= SAVE PROFILE ================= */
   const saveProfile = async () => {
     try {
-      await api.patch(`/clients/${storedClient.id}.json`, {
-        name: form.name,
-        phone: form.phone,
-        profilePic: form.profilePic,
-        address: form.address,
-      });
-
+      await api.patch(`/clients/${storedClient.id}.json`, form);
       setClient((prev) => ({ ...prev, ...form }));
       setEditing(false);
-      toast.success("Profile updated successfully");
+      toast.success(t("profile.updated"));
     } catch {
-      toast.error("Failed to update profile");
+      toast.error(t("profile.updateError"));
     }
   };
 
   if (!client) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        Loading profile...
+        {t("common.loading")}
       </div>
     );
   }
 
   return (
     <section
+      dir={isRTL ? "rtl" : "ltr"}
       className={`min-h-screen py-10 ${
         theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
       }`}
@@ -85,11 +79,15 @@ const UserProfile = () => {
             theme === "dark" ? "bg-gray-800" : "bg-white"
           }`}
         >
+          {/* EDIT BUTTON */}
           <button
             onClick={() => setEditing(true)}
-            className="absolute top-4 right-4 flex items-center gap-1 text-sm text-indigo-500 hover:underline"
+            className={`absolute top-4 flex items-center gap-1 text-sm text-indigo-500 hover:underline
+              ${isRTL ? "left-4" : "right-4"}
+            `}
           >
-            <Edit2 size={16} /> Edit
+            <Edit2 size={16} />
+            {t("profile.edit")}
           </button>
 
           <div className="flex items-center gap-6">
@@ -109,7 +107,7 @@ const UserProfile = () => {
               <h1 className="text-2xl font-bold">{client.name}</h1>
               <p className="opacity-70">{client.email}</p>
               <p className="text-sm opacity-60 mt-1">
-                {orders.length} orders placed
+                {orders.length} {t("profile.ordersPlaced")}
               </p>
             </div>
           </div>
@@ -125,84 +123,17 @@ const UserProfile = () => {
 
             <p className="flex items-center gap-2 md:col-span-2">
               <MapPin size={16} />
-              {client.address || "No address provided"}
+              {client.address || t("profile.noAddress")}
             </p>
           </div>
 
           {client.createdAt && (
             <p className="text-xs opacity-60 mt-4">
-              Member since {new Date(client.createdAt).toLocaleDateString()}
+              {t("profile.memberSince")}{" "}
+              {new Date(client.createdAt).toLocaleDateString()}
             </p>
           )}
         </div>
-
-        {/* ================= ORDERS ================= */}
-        {orders.length > 0 && (
-          <div
-            className={`rounded-2xl p-6 shadow ${
-              theme === "dark" ? "bg-gray-800" : "bg-white"
-            }`}
-          >
-            <h2 className="text-xl font-bold mb-6">Your Orders</h2>
-
-            <div className="space-y-4">
-              {orders.map((order, idx) => (
-                <div
-                  key={idx}
-                  className={`p-4 rounded-xl border ${
-                    theme === "dark"
-                      ? "border-gray-700 bg-gray-900"
-                      : "border-gray-200 bg-gray-50"
-                  }`}
-                >
-                  <div className="flex justify-between items-center mb-2">
-                    <div>
-                      <p className="font-semibold">
-                        👨‍🔧 {order.tradespersonName || "Tradesperson"}
-                      </p>
-                      <p className="text-sm opacity-70">{order.trade || ""}</p>
-                    </div>
-
-                    <span
-                      className={`text-xs px-3 py-1 rounded-full ${
-                        order.status === "completed"
-                          ? "bg-green-500/20 text-green-500"
-                          : order.status === "cancelled"
-                          ? "bg-red-500/20 text-red-500"
-                          : "bg-yellow-500/20 text-yellow-500"
-                      }`}
-                    >
-                      {order.status || "pending"}
-                    </span>
-                  </div>
-
-                  {order.services && (
-                    <ul className="text-sm space-y-1 mb-3">
-                      {order.services.map((s, i) => (
-                        <li key={i} className="flex justify-between">
-                          <span>{s.name}</span>
-                          <span>{s.price} EGP</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
-                  <div className="flex justify-between text-sm font-medium">
-                    <span>Total</span>
-                    <span>{order.total || 0} EGP</span>
-                  </div>
-
-                  {order.createdAt && (
-                    <p className="text-xs opacity-60 mt-2">
-                      Ordered on{" "}
-                      {new Date(order.createdAt).toLocaleDateString()}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
 
       {/* ================= EDIT MODAL ================= */}
@@ -215,38 +146,40 @@ const UserProfile = () => {
           >
             <button
               onClick={() => setEditing(false)}
-              className="absolute top-4 right-4"
+              className={`absolute top-4 ${isRTL ? "left-4" : "right-4"}`}
             >
               <X />
             </button>
 
-            <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
+            <h2 className="text-xl font-bold mb-4">
+              {t("profile.editProfile")}
+            </h2>
 
             <div className="space-y-4">
               <input
                 className="w-full px-3 py-2 rounded border bg-transparent"
-                placeholder="Full name"
+                placeholder={t("profile.fullName")}
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
               />
 
               <input
                 className="w-full px-3 py-2 rounded border bg-transparent"
-                placeholder="Phone"
+                placeholder={t("profile.phone")}
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
               />
 
               <input
                 className="w-full px-3 py-2 rounded border bg-transparent"
-                placeholder="Address"
+                placeholder={t("profile.address")}
                 value={form.address}
                 onChange={(e) => setForm({ ...form, address: e.target.value })}
               />
 
               <input
                 className="w-full px-3 py-2 rounded border bg-transparent"
-                placeholder="Profile image URL"
+                placeholder={t("profile.profileImage")}
                 value={form.profilePic}
                 onChange={(e) =>
                   setForm({ ...form, profilePic: e.target.value })
@@ -257,7 +190,7 @@ const UserProfile = () => {
                 onClick={saveProfile}
                 className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-md"
               >
-                Save Changes
+                {t("common.save")}
               </button>
             </div>
           </div>

@@ -4,8 +4,11 @@ import { Link } from "react-router-dom";
 import api from "../services/api";
 import { useSelector, useDispatch } from "react-redux";
 import { clearOrder, addService } from "../store/orderSlice";
+import { useTranslation } from "react-i18next";
 
 const Orders = () => {
+  const { t, i18n } = useTranslation();
+
   const { client } = useSelector((state) => state.order);
   const theme = useSelector((state) => state.theme.mode);
   const dispatch = useDispatch();
@@ -13,6 +16,11 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const dir = i18n.language === "ar" ? "rtl" : "ltr";
+
+  // ========================
+  // Fetch user orders
+  // ========================
   useEffect(() => {
     if (!client?.id) return;
 
@@ -29,38 +37,54 @@ const Orders = () => {
       .finally(() => setLoading(false));
   }, [client]);
 
+  // ========================
+  // Cancel order
+  // ========================
   const cancelOrder = async (orderId) => {
-    await api.patch(`/orders/${orderId}.json`, {
-      status: "canceled",
-    });
+    try {
+      await api.patch(`/orders/${orderId}.json`, {
+        status: "canceled",
+      });
 
-    setOrders((prev) =>
-      prev.map((o) => (o.id === orderId ? { ...o, status: "canceled" } : o))
-    );
+      setOrders((prev) =>
+        prev.map((o) => (o.id === orderId ? { ...o, status: "canceled" } : o))
+      );
+    } catch {
+      alert(t("Failed to cancel order"));
+    }
   };
 
+  // ========================
+  // Reorder
+  // ========================
   const reorder = (order) => {
     dispatch(clearOrder());
 
-    order.services.forEach((s) => dispatch(addService(s)));
+    order.services?.forEach((s) => dispatch(addService(s)));
 
-    // redirect لاحقًا للـ checkout
-    alert("Services added again to order 🛒");
+    alert(t("Services added again to order"));
+    // لاحقًا: navigate("/checkout")
   };
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  // ========================
+  // Guards
+  // ========================
+  if (loading) {
+    return <p className="text-center mt-10">{t("Loading...")}</p>;
+  }
 
   return (
     <section
+      dir={dir}
       className={`min-h-screen py-10 ${
-        theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50"
+        theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
       }`}
     >
       <div className="max-w-5xl mx-auto px-4 space-y-6">
-        <h1 className="text-2xl font-bold">My Orders</h1>
+        <h1 className="text-2xl font-bold">{t("My Orders")}</h1>
 
         {orders.length === 0 && (
-          <p className="opacity-60">You have no orders yet.</p>
+          <p className="opacity-60">{t("You have no orders yet.")}</p>
         )}
 
         {orders.map((order) => (
@@ -72,12 +96,13 @@ const Orders = () => {
                 : "bg-white border-gray-200"
             }`}
           >
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
               <div>
                 <h3 className="font-semibold">{order.tradespersonName}</h3>
                 <p className="text-sm text-indigo-500">{order.trade}</p>
                 <p className="text-sm mt-1">
-                  Status: <span className="font-semibold">{order.status}</span>
+                  {t("Status")}:{" "}
+                  <span className="font-semibold">{order.status}</span>
                 </p>
               </div>
 
@@ -86,7 +111,7 @@ const Orders = () => {
                   to={`/orders/${order.id}`}
                   className="px-3 py-1 rounded bg-indigo-600 text-white text-sm"
                 >
-                  View
+                  {t("View")}
                 </Link>
 
                 {order.status === "pending" && (
@@ -94,7 +119,7 @@ const Orders = () => {
                     onClick={() => cancelOrder(order.id)}
                     className="px-3 py-1 rounded bg-red-600 text-white text-sm"
                   >
-                    Cancel
+                    {t("Cancel")}
                   </button>
                 )}
 
@@ -104,7 +129,7 @@ const Orders = () => {
                     onClick={() => reorder(order)}
                     className="px-3 py-1 rounded bg-gray-600 text-white text-sm"
                   >
-                    Reorder
+                    {t("Reorder")}
                   </button>
                 )}
               </div>

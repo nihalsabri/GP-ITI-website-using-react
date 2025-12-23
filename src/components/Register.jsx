@@ -6,8 +6,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Input from "./Input";
 import { User, Mail, Lock, Eye, EyeOff, Image, MapPin } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Register = () => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -33,16 +36,18 @@ const Register = () => {
       (name === "firstName" || name === "lastName") &&
       value.trim().length < 2
     )
-      msg = `${name === "firstName" ? "First name" : "Last name"} too short`;
+      msg = t(
+        name === "firstName" ? "First name too short" : "Last name too short"
+      );
 
     if (name === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
-      msg = "Invalid email";
+      msg = t("Invalid email");
 
     if (name === "password" && value.length < 8)
-      msg = "Password must be 8+ characters";
+      msg = t("Password must be 8+ characters");
 
     if (name === "confirmPassword" && value !== formData.password)
-      msg = "Passwords do not match";
+      msg = t("Passwords do not match");
 
     setErrors((p) => ({ ...p, [name]: msg }));
   };
@@ -59,7 +64,7 @@ const Register = () => {
     e.preventDefault();
 
     if (hasErrors()) {
-      toast.error("Fix form errors first");
+      toast.error(t("Fix form errors first"));
       return;
     }
 
@@ -82,7 +87,7 @@ const Register = () => {
         createdAt: new Date().toISOString(),
       });
 
-      toast.success("Registered successfully — please login");
+      toast.success(t("Registered successfully — please login"));
 
       setFormData({
         firstName: "",
@@ -99,8 +104,8 @@ const Register = () => {
       console.error("register failed:", err.code, err.message);
 
       if (err.code === "auth/email-already-in-use")
-        toast.error("Email already in use");
-      else toast.error("Registration failed");
+        toast.error(t("Email already in use"));
+      else toast.error(t("Registration failed"));
     } finally {
       setLoading(false);
     }
@@ -129,22 +134,24 @@ const Register = () => {
               AP
             </div>
             <div>
-              <h2 className="text-lg font-semibold">Create your account</h2>
-              <p className="text-sm text-gray-400">Join our platform</p>
+              <h2 className="text-lg font-semibold">
+                {t("Create your account")}
+              </h2>
+              <p className="text-sm text-gray-400">{t("Join our platform")}</p>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="px-6 pb-6 space-y-4">
             {/* First Name */}
             <div>
-              <label className="text-sm font-medium">First name</label>
+              <label className="text-sm font-medium">{t("First name")}</label>
               <div
                 className={`flex items-center gap-2 border rounded-md px-3 py-2 ${inputBg}`}
               >
                 <User size={16} />
                 <Input
                   name="firstName"
-                  placeholder="First name"
+                  placeholder={t("First name")}
                   value={formData.firstName}
                   onChange={handleChange}
                   className="w-full bg-transparent outline-none"
@@ -157,14 +164,14 @@ const Register = () => {
 
             {/* Last Name */}
             <div>
-              <label className="text-sm font-medium">Last name</label>
+              <label className="text-sm font-medium">{t("Last name")}</label>
               <div
                 className={`flex items-center gap-2 border rounded-md px-3 py-2 ${inputBg}`}
               >
                 <User size={16} />
                 <Input
                   name="lastName"
-                  placeholder="Last name"
+                  placeholder={t("Last name")}
                   value={formData.lastName}
                   onChange={handleChange}
                   className="w-full bg-transparent outline-none"
@@ -177,14 +184,14 @@ const Register = () => {
 
             {/* Email */}
             <div>
-              <label className="text-sm font-medium">Email</label>
+              <label className="text-sm font-medium">{t("Email")}</label>
               <div
                 className={`flex items-center gap-2 border rounded-md px-3 py-2 ${inputBg}`}
               >
                 <Mail size={16} />
                 <Input
                   name="email"
-                  placeholder="Email"
+                  placeholder={t("Email")}
                   value={formData.email}
                   onChange={handleChange}
                   className="w-full bg-transparent outline-none"
@@ -195,9 +202,11 @@ const Register = () => {
               )}
             </div>
 
-            {/* Profile Image URL */}
+            {/* Profile Image */}
             <div>
-              <label className="text-sm font-medium">Profile Image URL</label>
+              <label className="text-sm font-medium">
+                {t("Profile Image URL")}
+              </label>
               <div
                 className={`flex items-center gap-2 border rounded-md px-3 py-2 ${inputBg}`}
               >
@@ -214,14 +223,14 @@ const Register = () => {
 
             {/* Address */}
             <div>
-              <label className="text-sm font-medium">Address</label>
+              <label className="text-sm font-medium">{t("Address")}</label>
               <div
                 className={`flex items-center gap-2 border rounded-md px-3 py-2 ${inputBg}`}
               >
                 <MapPin size={16} />
                 <Input
                   name="address"
-                  placeholder="Street, City, Area"
+                  placeholder={t("Street, City, Area")}
                   value={formData.address}
                   onChange={handleChange}
                   className="w-full bg-transparent outline-none"
@@ -231,7 +240,7 @@ const Register = () => {
 
             {/* Password */}
             <div>
-              <label className="text-sm font-medium">Password</label>
+              <label className="text-sm font-medium">{t("Password")}</label>
               <div
                 className={`flex items-center gap-2 border rounded-md px-3 py-2 ${inputBg}`}
               >
@@ -239,7 +248,7 @@ const Register = () => {
                 <Input
                   name="password"
                   type={showPass ? "text" : "password"}
-                  placeholder="Password"
+                  placeholder={t("Password")}
                   value={formData.password}
                   onChange={handleChange}
                   className="w-full bg-transparent outline-none"
@@ -255,7 +264,9 @@ const Register = () => {
 
             {/* Confirm Password */}
             <div>
-              <label className="text-sm font-medium">Confirm Password</label>
+              <label className="text-sm font-medium">
+                {t("Confirm Password")}
+              </label>
               <div
                 className={`flex items-center gap-2 border rounded-md px-3 py-2 ${inputBg}`}
               >
@@ -263,7 +274,7 @@ const Register = () => {
                 <Input
                   name="confirmPassword"
                   type={showConfirm ? "text" : "password"}
-                  placeholder="Repeat password"
+                  placeholder={t("Repeat password")}
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   className="w-full bg-transparent outline-none"
@@ -282,13 +293,13 @@ const Register = () => {
               disabled={loading}
               className="w-full bg-green-700 hover:bg-green-800 text-white py-2 rounded-md"
             >
-              {loading ? "Signing up..." : "Sign Up"}
+              {loading ? t("Signing up...") : t("Sign Up")}
             </button>
 
             <p className="text-center text-sm mt-3">
-              Already have an account?{" "}
+              {t("Already have an account?")}{" "}
               <Link to="/login" className="text-indigo-400">
-                Login
+                {t("Login")}
               </Link>
             </p>
           </form>

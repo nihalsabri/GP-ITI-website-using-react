@@ -5,8 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import api from "../services/api";
 import { addService, clearOrder } from "../store/orderSlice";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 const OrderDetails = () => {
+  const { t, i18n } = useTranslation();
+
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -14,6 +17,8 @@ const OrderDetails = () => {
 
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const dir = i18n.language === "ar" ? "rtl" : "ltr";
 
   // ========================
   // Fetch order
@@ -45,10 +50,10 @@ const OrderDetails = () => {
       });
 
       setOrder((prev) => ({ ...prev, status: "ملغية" }));
-      toast.success("Order canceled successfully");
+      toast.success(t("Order canceled successfully"));
     } catch (err) {
       console.error("Cancel failed:", err);
-      toast.error("Failed to cancel order");
+      toast.error(t("Failed to cancel order"));
     }
   };
 
@@ -68,8 +73,8 @@ const OrderDetails = () => {
       })
     );
 
-    toast.success("Service added to your order");
-    navigate("/checkout"); // أو أي صفحة cart عندك
+    toast.success(t("Service added to your order"));
+    navigate("/checkout");
   };
 
   // ========================
@@ -78,7 +83,7 @@ const OrderDetails = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        Loading...
+        {t("Loading...")}
       </div>
     );
   }
@@ -86,7 +91,7 @@ const OrderDetails = () => {
   if (!order) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        Order not found.
+        {t("Order not found")}
       </div>
     );
   }
@@ -96,6 +101,7 @@ const OrderDetails = () => {
 
   return (
     <section
+      dir={dir}
       className={`min-h-screen py-10 ${
         theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
       }`}
@@ -106,19 +112,21 @@ const OrderDetails = () => {
             theme === "dark" ? "bg-gray-800" : "bg-white"
           }`}
         >
-          <h1 className="text-2xl font-bold">Order Details</h1>
+          <h1 className="text-2xl font-bold">{t("Order Details")}</h1>
 
           <div className="space-y-1">
             <p>
-              <span className="font-medium">Service:</span> {order.serviceType}
+              <span className="font-medium">{t("Service")}:</span>{" "}
+              {order.serviceType}
             </p>
 
             <p>
-              <span className="font-medium">Date:</span> {order.date || "—"}
+              <span className="font-medium">{t("Date")}:</span>{" "}
+              {order.date || "—"}
             </p>
 
             <p>
-              <span className="font-medium">Status:</span>{" "}
+              <span className="font-medium">{t("Status")}:</span>{" "}
               <span
                 className={`font-semibold ${
                   order.status === "جديدة"
@@ -140,7 +148,7 @@ const OrderDetails = () => {
                 onClick={cancelOrder}
                 className="px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white"
               >
-                Cancel Order
+                {t("Cancel Order")}
               </button>
             )}
 
@@ -149,7 +157,7 @@ const OrderDetails = () => {
                 onClick={reorder}
                 className="px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white"
               >
-                Reorder
+                {t("Reorder")}
               </button>
             )}
           </div>
