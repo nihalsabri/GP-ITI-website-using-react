@@ -5,7 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Input from "./Input";
-import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { User, Mail, Lock, Eye, EyeOff, Image, MapPin } from "lucide-react";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -14,7 +14,10 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    profilePic: "",
+    address: "",
   });
+
   const [errors, setErrors] = useState({});
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -25,17 +28,22 @@ const Register = () => {
 
   const validateField = (name, value) => {
     let msg = "";
+
     if (
       (name === "firstName" || name === "lastName") &&
       value.trim().length < 2
     )
       msg = `${name === "firstName" ? "First name" : "Last name"} too short`;
+
     if (name === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
       msg = "Invalid email";
+
     if (name === "password" && value.length < 8)
       msg = "Password must be 8+ characters";
+
     if (name === "confirmPassword" && value !== formData.password)
       msg = "Passwords do not match";
+
     setErrors((p) => ({ ...p, [name]: msg }));
   };
 
@@ -49,41 +57,47 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (hasErrors()) {
-      toast.error("Fix form errors first.");
+      toast.error("Fix form errors first");
       return;
     }
 
     setLoading(true);
+
     try {
       const firstName = formData.firstName.trim();
       const lastName = formData.lastName.trim();
       const displayName = `${firstName} ${lastName}`.trim();
 
       await userRegister(formData.email.trim(), formData.password, {
+        name: displayName,
         firstName,
         lastName,
-        username: displayName, // keep username available as before (First Last)
+        email: formData.email.trim(),
         phone: "",
-        profilePic: "",
+        address: formData.address.trim(),
+        profilePic: formData.profilePic.trim(),
+        orders: [],
+        createdAt: new Date().toISOString(),
       });
 
-      // Optional: store a minimal client object for UI (username + initial)
-      const username = displayName || formData.email.split("@")[0];
-      const initial = username ? username[0].toUpperCase() : "U";
-      localStorage.setItem("client", JSON.stringify({ username, initial }));
-
       toast.success("Registered successfully — please login");
+
       setFormData({
         firstName: "",
         lastName: "",
         email: "",
         password: "",
         confirmPassword: "",
+        profilePic: "",
+        address: "",
       });
+
       navigate("/login");
     } catch (err) {
       console.error("register failed:", err.code, err.message);
+
       if (err.code === "auth/email-already-in-use")
         toast.error("Email already in use");
       else toast.error("Registration failed");
@@ -94,8 +108,11 @@ const Register = () => {
 
   const cardBg =
     theme === "dark" ? "bg-gray-800 text-gray-50" : "bg-white text-gray-900";
+
   const inputBg =
-    theme === "dark" ? "bg-gray-700/40" : "bg-gray-50 text-gray-900";
+    theme === "dark"
+      ? "bg-gray-700/40 text-gray-50"
+      : "bg-gray-50 text-gray-900";
 
   return (
     <>
@@ -118,17 +135,18 @@ const Register = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="px-6 pb-6 space-y-4">
+            {/* First Name */}
             <div>
               <label className="text-sm font-medium">First name</label>
               <div
-                className={`flex items-center border rounded-md px-3 py-2 ${inputBg}`}
+                className={`flex items-center gap-2 border rounded-md px-3 py-2 ${inputBg}`}
               >
                 <User size={16} />
                 <Input
                   name="firstName"
                   placeholder="First name"
-                  onChange={handleChange}
                   value={formData.firstName}
+                  onChange={handleChange}
                   className="w-full bg-transparent outline-none"
                 />
               </div>
@@ -137,17 +155,18 @@ const Register = () => {
               )}
             </div>
 
+            {/* Last Name */}
             <div>
               <label className="text-sm font-medium">Last name</label>
               <div
-                className={`flex items-center border rounded-md px-3 py-2 ${inputBg}`}
+                className={`flex items-center gap-2 border rounded-md px-3 py-2 ${inputBg}`}
               >
                 <User size={16} />
                 <Input
                   name="lastName"
                   placeholder="Last name"
-                  onChange={handleChange}
                   value={formData.lastName}
+                  onChange={handleChange}
                   className="w-full bg-transparent outline-none"
                 />
               </div>
@@ -156,17 +175,18 @@ const Register = () => {
               )}
             </div>
 
+            {/* Email */}
             <div>
               <label className="text-sm font-medium">Email</label>
               <div
-                className={`flex items-center border rounded-md px-3 py-2 ${inputBg}`}
+                className={`flex items-center gap-2 border rounded-md px-3 py-2 ${inputBg}`}
               >
                 <Mail size={16} />
                 <Input
                   name="email"
                   placeholder="Email"
-                  onChange={handleChange}
                   value={formData.email}
+                  onChange={handleChange}
                   className="w-full bg-transparent outline-none"
                 />
               </div>
@@ -175,25 +195,56 @@ const Register = () => {
               )}
             </div>
 
+            {/* Profile Image URL */}
+            <div>
+              <label className="text-sm font-medium">Profile Image URL</label>
+              <div
+                className={`flex items-center gap-2 border rounded-md px-3 py-2 ${inputBg}`}
+              >
+                <Image size={16} />
+                <Input
+                  name="profilePic"
+                  placeholder="https://image-link.com/photo.jpg"
+                  value={formData.profilePic}
+                  onChange={handleChange}
+                  className="w-full bg-transparent outline-none"
+                />
+              </div>
+            </div>
+
+            {/* Address */}
+            <div>
+              <label className="text-sm font-medium">Address</label>
+              <div
+                className={`flex items-center gap-2 border rounded-md px-3 py-2 ${inputBg}`}
+              >
+                <MapPin size={16} />
+                <Input
+                  name="address"
+                  placeholder="Street, City, Area"
+                  value={formData.address}
+                  onChange={handleChange}
+                  className="w-full bg-transparent outline-none"
+                />
+              </div>
+            </div>
+
+            {/* Password */}
             <div>
               <label className="text-sm font-medium">Password</label>
               <div
-                className={`flex items-center border rounded-md px-3 py-2 ${inputBg}`}
+                className={`flex items-center gap-2 border rounded-md px-3 py-2 ${inputBg}`}
               >
                 <Lock size={16} />
                 <Input
                   name="password"
                   type={showPass ? "text" : "password"}
                   placeholder="Password"
-                  onChange={handleChange}
                   value={formData.password}
+                  onChange={handleChange}
                   className="w-full bg-transparent outline-none"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPass((v) => !v)}
-                  className="p-1"
-                >
+                <button type="button" onClick={() => setShowPass((v) => !v)}>
                   {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
@@ -202,25 +253,22 @@ const Register = () => {
               )}
             </div>
 
+            {/* Confirm Password */}
             <div>
               <label className="text-sm font-medium">Confirm Password</label>
               <div
-                className={`flex items-center border rounded-md px-3 py-2 ${inputBg}`}
+                className={`flex items-center gap-2 border rounded-md px-3 py-2 ${inputBg}`}
               >
                 <Lock size={16} />
                 <Input
                   name="confirmPassword"
                   type={showConfirm ? "text" : "password"}
                   placeholder="Repeat password"
-                  onChange={handleChange}
                   value={formData.confirmPassword}
+                  onChange={handleChange}
                   className="w-full bg-transparent outline-none"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirm((v) => !v)}
-                  className="p-1"
-                >
+                <button type="button" onClick={() => setShowConfirm((v) => !v)}>
                   {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
@@ -232,7 +280,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-green-700 text-white py-2 rounded-md"
+              className="w-full bg-green-700 hover:bg-green-800 text-white py-2 rounded-md"
             >
               {loading ? "Signing up..." : "Sign Up"}
             </button>
