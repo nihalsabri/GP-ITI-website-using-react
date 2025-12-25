@@ -21,6 +21,7 @@ import UserProfile from "./components/UserProfile";
 import Orders from "./components/Orders";
 import OrderDetails from "./components/OrderDetails";
 import TradesmenLanding from "./components/LandingPage";
+import Checkout from "./components/Checkout";
 
 const router = createBrowserRouter([
   {
@@ -47,7 +48,10 @@ const router = createBrowserRouter([
         path: "contact",
         element: <Contact />,
       },
-
+      {
+        path: "checkout",
+        element: <Checkout />,
+      },
       {
         path: "tradespeople",
         element: <Tradespeople />,

@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import api from "../services/api";
 import { setTradesperson } from "../store/orderSlice";
 import ServiceCard from "../components/ServiceCard";
-
 const tradeServiceMap = {
   "electric technician": "Electrical",
   plumber: "Plumbing",
@@ -40,6 +39,11 @@ const Tradesperson = () => {
   const [rating, setRating] = useState(0);
   const [loading, setLoading] = useState(true);
 
+  const navigate = useNavigate();
+
+const selectedServices = useSelector((state) => state.order.services);
+
+const totalPrice = selectedServices.reduce((sum, s) => sum + (s.price || 0), 0);
   /* ================= FETCH PERSON ================= */
   useEffect(() => {
     if (!id) return;
@@ -83,6 +87,7 @@ const Tradesperson = () => {
       setServices(list.filter((s) => s.category === mappedCategory));
     });
   }, [person]);
+
 
   /* ================= RATE ================= */
   const submitRating = async (value) => {
@@ -203,8 +208,25 @@ const Tradesperson = () => {
                 tradespersonId={person.id}
               />
             ))}
+
+
           </div>
+    {services.length > 0 && ( 
+  <div className="fixed bottom-0 left-0 right-0 p-4 bg-white dark:bg-gray-900 shadow-lg border-t dark:border-gray-700">
+    <div className="max-w-5xl mx-auto">
+      <button
+        onClick={() => navigate("/checkout")}
+        className="w-full bg-[#372B70] hover:bg-white hover:text-[#372B70] hover:border hover:border-[#372B70] text-white font-bold py-4 rounded-xl text-lg transition"
+      >
+        {t("Proceed to Payment")}
+         ({selectedServices.length}) 
+        — {totalPrice} EGP
+      </button>
+    </div>
+  </div>
+)}
         </section>
+
       </div>
     </section>
   );

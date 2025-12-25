@@ -105,6 +105,10 @@ const Tradespeople = () => {
             {t("No tradespeople found.")}
           </p>
         )}
+
+
+
+        
       </div>
     </section>
   );
