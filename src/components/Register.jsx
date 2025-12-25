@@ -85,6 +85,7 @@ const Register = () => {
         profilePic: formData.profilePic.trim(),
         orders: [],
         createdAt: new Date().toISOString(),
+        role: "client",
       });
 
       toast.success(t("Registered successfully — please login"));
