@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import { ThemeContext } from "./context/theme";
 
-import Footer from "./components/Footer";
+import Footer from "./components/footer";
 import Home from "./components/Home";
 import Navbar from "./components/Navbar";
 
