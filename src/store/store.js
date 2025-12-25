@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import themeReducer from "./themeSlice";
-import LangReducer from "./LangSlice";
+import langReducer from "./langSlice";
 import orderReducer from "./orderSlice";
 
 export const store = configureStore({
   reducer: {
     theme: themeReducer,
-    lang: LangReducer,
+    lang: langReducer,
     order: orderReducer,
   },
 });
