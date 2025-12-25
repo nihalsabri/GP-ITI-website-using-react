@@ -2,7 +2,7 @@ import { Outlet } from "react-router";
 import { ThemeContext } from "./context/theme";
 
 import Footer from "./components/footer";
-import Home from "./components/Home";
+import Home from "./components/home";
 import Navbar from "./components/Navbar";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
