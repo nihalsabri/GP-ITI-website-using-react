@@ -72,6 +72,9 @@ const handleSubmit = async (event) => {
     setLoading(false);
   }
 };
+if (!stripe) {
+  return <p className="text-red-500">Stripe failed to load. Please refresh.</p>;
+}
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <h3 className="font-semibold">{t("Card Details")}</h3>
