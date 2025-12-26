@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import api from "../services/api";
 import { setTradesperson } from "../store/orderSlice";
-import ServiceCard from "../components/ServiceCard";
+import ServiceCard from "../components/serviceCard";
 const tradeServiceMap = {
   "electric technician": "Electrical",
   plumber: "Plumbing",
