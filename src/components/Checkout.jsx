@@ -13,7 +13,7 @@ import { clearOrder } from "../store/orderSlice";
 import { useState } from "react";
 
 
-const stripePromise = loadStripe(import.meta.env.STRIPE_PUBLIC_KEY); 
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY); 
 
 const CheckoutForm = () => {
   const stripe = useStripe();
