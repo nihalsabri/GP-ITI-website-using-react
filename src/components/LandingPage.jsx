@@ -457,7 +457,7 @@ export default function TradesmenLanding() {
               <iframe
                 width="100%"
                 height="329"
-                src="../../public/home-images/Tradesmen-10sec.mp4"
+                src="/public/home-images/Tradesmen-10sec.mp4"
                 title="Peace of mind"
                 className="rounded-xl shadow-lg w-full"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -504,19 +504,19 @@ export default function TradesmenLanding() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                img: "../../public/home-images/roofing-img.webp",
+                img: "/public/home-images/roofing-img.webp",
                 title: "Submit a Job Enquiry",
                 desc: "Tell us what you need doing and we'll put you in touch with our qualified tradespeople",
                 btn: "Post an Enquiry",
               },
               {
-                img: "../../public/home-images/card2.webp",
+                img: "/public/home-images/card2.webp",
                 title: "Sign up to become a tradesperson",
                 desc: "If you are looking to expand your customer base, there is no better platform than Tradesmen Online.",
                 btn: "Join our Tradesperson Directory",
               },
               {
-                img: "../../public/home-images/card3.webp",
+                img: "/public/home-images/card3.webp",
                 title: "Tell us what you think",
                 desc: "Happy with the work your tradesperson just completed? Let them know what you think.",
                 btn: "Leave a review",
@@ -600,7 +600,7 @@ export default function TradesmenLanding() {
             </div>
             <div className="rounded-2xl overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-all duration-500 order-1 lg:order-2 group relative">
               <img
-                src="../../public/home-images/active-roofing-banner.webp"
+                src="/public/home-images/active-roofing-banner.webp"
                 alt="Active Roofing"
                 className="w-full h-[400px] object-cover group-hover:scale-110 transition-transform duration-700"
               />
