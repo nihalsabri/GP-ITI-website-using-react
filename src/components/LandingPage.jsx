@@ -56,19 +56,19 @@ export default function TradesmenLanding() {
   const popularJobs = [
     {
       title: "Electrician",
-      image: "../../public/home-images/Electrician-img.jpeg",
+      image: "/public/home-images/Electrician-img.jpeg",
     },
     {
       title: "Windows, doors, conservatory",
-      image: "../../public/home-images/conservatory-img.jpeg",
+      image: "/public/home-images/conservatory-img.jpeg",
     },
     {
       title: "Gas engineer",
-      image: "../../public/home-images/gas-engineer-img.webp",
+      image: "/public/home-images/gas-engineer-img.webp",
     },
-    { title: "Tiling", image: "../../public/home-images/Tiling.webp" },
-    { title: "Building", image: "../../public/home-images/building-img.webp" },
-    { title: "Roofing", image: "../../public/home-images/roofing-img.webp" },
+    { title: "Tiling", image: "/public/home-images/Tiling.webp" },
+    { title: "Building", image: "/public/home-images/building-img.webp" },
+    { title: "Roofing", image: "/public/home-images/roofing-img.webp" },
   ];
 
   const partners = [
