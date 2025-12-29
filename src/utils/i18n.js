@@ -568,7 +568,7 @@ title:"Tradespeople near you",
       "Street, City, Area": "الشارع، المدينة، المنطقة",
 
       "Repeat password": "إعادة كلمة المرور",
-
+"Proceed to Payment": "متابعة الدفع",
       "Signing up...": "جاري إنشاء الحساب...",
       "Already have an account?": "لديك حساب بالفعل؟",
       "First name too short": "الاسم الأول قصير جدًا",
