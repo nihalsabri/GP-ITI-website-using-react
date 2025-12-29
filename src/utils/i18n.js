@@ -26,47 +26,17 @@ const resources = {
       /* ================= JOBS ================= */
 
       jobs: {
-        electrician: "Electrician",
-        windows: "Windows, doors & conservatory",
-        gas: "Gas engineer",
-        tiling: "Tiling",
-        building: "Building",
-        roofing: "Roofing",
-        plumber: "Plumber",
-        carpentry: "Carpentry",
-        painting: "Painting & Decorating",
+        "electrician": "Electrician",
+        "windows": "Windows, doors & conservatory",
+        "gas": "Gas engineer",
+        "tiling": "Tiling",
+        "building": "Building",
+        "roofing": "Roofing",
+        "plumber": "Plumber",
+        "carpentry": "Carpentry",
+        "painting": "Painting & Decorating",
       },
-      landing: {
-        hero: {
-          title: "Find a trusted tradesperson online",
-          subtitle: "Thousands of professionals ready to help you",
-          searchPlaceholder: "Trade e.g. Plumber, Electrician",
-        },
-        categories: {
-          title: "Search by Category",
-          electrician: "Electrician",
-          plumber: "Plumber",
-          carpenter: "Carpenter",
-          locksmith: "Locksmith",
-          decorator: "Decorator",
-          roofing: "Roofing",
-          building: "Building",
-          garages: "Garages",
-          landscaper: "Landscaper",
-        },
-        popular: {
-          title: "Popular Jobs",
-        },
-        jobs: {
-          electrician: "Electrician",
-          windows: "Windows & Doors",
-          gas: "Gas Engineer",
-          tiling: "Tiling",
-          building: "Building",
-          roofing: "Roofing",
-        },
-      },
-
+      
       /* ================= NAVBAR ================= */
       "Login / Register": "Login / Register",
       Login: "Login",
@@ -114,7 +84,78 @@ const resources = {
       Experience: "Experience",
       Joined: "Joined",
       "No tradespeople found.": "No tradespeople found.",
-
+  landing: {
+      hero: {
+        title: "Find a trusted tradesperson online",
+        subtitle: "Thousands of tradespeople are waiting to help you.",
+        searchPlaceholder: "Trade e.g. Plumber, Electrician",
+        searchButton: "Search",
+      },
+      categories: {
+        title: "Search by Category",
+        landscaper: "Landscaper",
+        garages: "Garages",
+        electrician: "Electrician",
+        locksmith: "Locksmith",
+        plumber: "Plumber",
+        joiner: "Joiner",
+        decorator: "Decorator",
+        building: "Building",
+        roofing: "Roofing",
+      },
+      popularJobs: {
+        title: "Popular Jobs",
+        electrician: "Electrician",
+        windows: "Windows, doors, conservatory",
+        gas: "Gas engineer",
+        tiling: "Tiling",
+        building: "Building",
+        roofing: "Roofing",
+      },
+      peaceMind: {
+        title: "Where Peace of Mind Matters",
+        description1: "Tradesmen Online is the easiest & safest way to find a reliable tradesperson. Giving you peace of mind knowing that you will get exactly what you expected with a great customer experience.",
+        description2: "We have over four thousand tradespeople across the UK who advertise on our platform.",
+        whyChoose: "Why choose us ?",
+      },
+      stats: {
+        tradespeople: "tradespeople",
+        tradesCovered: "trades covered",
+        websitesBuilt: "websites built",
+        productsCovered: "products covered",
+      },
+      actionCards: {
+        card1: {
+          title: "Submit a Job Enquiry",
+          desc: "Tell us what you need doing and we'll put you in touch with our qualified tradespeople",
+          btn: "Post an Enquiry",
+        },
+        card2: {
+          title: "Sign up to become a tradesperson",
+          desc: "If you are looking to expand your customer base, there is no better platform than Tradesmen Online.",
+          btn: "Join our Tradesperson Directory",
+        },
+        card3: {
+          title: "Tell us what you think",
+          desc: "Happy with the work your tradesperson just completed? Let them know what you think.",
+          btn: "Leave a review",
+        },
+      },
+      partners: {
+        title: "Our Trusted Partners",
+      },
+      bestTrade: {
+        title: "Bringing you the best in the trade",
+        description1: "Our tradespeople represent the highest standard of quality and professionalism. With exceptional workmanship, outstanding customer service, and consistently top-rated reviews, these experts have earned their place on our website",
+        description2: "When you choose a tradesperson through Tradesmen Online, you're choosing peace of mind, knowing your project is in the hands of someone who delivers excellence every time",
+        btn: "Find a Local Tradesperson",
+        banner: "Roofing Done Right The First Time, Every Time.",
+      },
+      findTrades: {
+        title: "Find Tradespeople",
+        nearMe: "near me",
+      },
+    },
       /* ================= PROFILE ================= */
       profile: {
         edit: "Edit",
@@ -269,36 +310,77 @@ const resources = {
       },
 
       landing: {
-        hero: {
-          title: "اعثر على فني موثوق عبر الإنترنت",
-          subtitle: "آلاف الفنيين المحترفين جاهزون لمساعدتك",
-          searchPlaceholder: "المهنة مثل: سباك، كهربائي",
+      hero: {
+        title: "اعثر على فني موثوق عبر الإنترنت",
+        subtitle: "آلاف الفنيين ينتظرون لمساعدتك.",
+        searchPlaceholder: "المهنة مثل: سباك، كهربائي",
+        searchButton: "بحث",
+      },
+      categories: {
+        title: "ابحث حسب الفئة",
+        landscaper: "تنسيق حدائق",
+        garages: "جراجات",
+        electrician: "كهربائي",
+        locksmith: "صانع أقفال",
+        plumber: "سباك",
+        joiner: "نجار",
+        decorator: "دهان",
+        building: "بناء",
+        roofing: "أعمال الأسقف",
+      },
+      popularJobs: {
+        title: "الأعمال الشائعة",
+        electrician: "كهربائي",
+        windows: "شبابيك وأبواب وصوب زجاجية",
+        gas: "فني غاز",
+        tiling: "تركيب بلاط",
+        building: "أعمال بناء",
+        roofing: "أعمال الأسقف",
+      },
+      peaceMind: {
+        title: "حيث يهم راحة البال",
+        description1: "تريدسمان أونلاين هي أسهل وأأمن طريقة للعثور على فني موثوق. نمنحك راحة البال بمعرفة أنك ستحصل على ما تتوقعه بالضبط مع تجربة عملاء رائعة.",
+        description2: "لدينا أكثر من أربعة آلاف فني في جميع أنحاء المملكة المتحدة يعلنون على منصتنا.",
+        whyChoose: "لماذا تختارنا ؟",
+      },
+      stats: {
+        tradespeople: "فني",
+        tradesCovered: "مهنة مغطاة",
+        websitesBuilt: "موقع تم بناؤه",
+        productsCovered: "منتج مغطى",
+      },
+      actionCards: {
+        card1: {
+          title: "قدم طلب عمل",
+          desc: "أخبرنا بما تحتاجه وسنوصلك بالفنيين المؤهلين لدينا",
+          btn: "انشر استفسارًا",
         },
-        categories: {
-          title: "ابحث حسب الفئة",
-          electrician: "كهربائي",
-          plumber: "سباك",
-          carpenter: "نجار",
-          locksmith: "صانع أقفال",
-          decorator: "دهّان",
-          roofing: "أعمال الأسقف",
-          building: "بناء",
-          garages: "جراجات",
-          landscaper: "تنسيق حدائق",
+        card2: {
+          title: "سجل لتصبح فنيًا",
+          desc: "إذا كنت تتطلع إلى توسيع قاعدة عملائك، فلا توجد منصة أفضل من تريدسمان أونلاين.",
+          btn: "انضم إلى دليل الفنيين",
         },
-        popular: {
-          title: "الأعمال الشائعة",
-        },
-        jobs: {
-          electrician: "كهربائي",
-          windows: "شبابيك وأبواب",
-          gas: "فني غاز",
-          tiling: "تركيب بلاط",
-          building: "أعمال بناء",
-          roofing: "أعمال الأسقف",
+        card3: {
+          title: "أخبرنا برأيك",
+          desc: "هل أنت راضٍ عن العمل الذي أكمله الفني؟ أخبره برأيك.",
+          btn: "اترك تقييمًا",
         },
       },
-
+      partners: {
+        title: "شركاؤنا الموثوقون",
+      },
+      bestTrade: {
+        title: "نقدم لك الأفضل في المهنة",
+        description1: "يمثل فنيونا أعلى معايير الجودة والاحترافية. بفضل الحرفية الاستثنائية وخدمة العملاء المتميزة والتقييمات الممتازة باستمرار، حصل هؤلاء الخبراء على مكانهم في موقعنا",
+        description2: "عندما تختار فنيًا من خلال تريدسمان أونلاين، فأنت تختار راحة البال، مع العلم أن مشروعك في أيدي شخص يقدم التميز في كل مرة",
+        btn: "ابحث عن فني محلي",
+        banner: "أعمال الأسقف تتم بشكل صحيح من المرة الأولى، في كل مرة.",
+      },
+      findTrades: {
+        title: "ابحث عن الفنيين",
+        nearMe: "بالقرب مني",
+      },
+    },
       nav: {
         home: "الرئيسية",
         directory: "الدليل",
