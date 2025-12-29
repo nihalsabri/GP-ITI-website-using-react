@@ -1,5 +1,4 @@
 import Stripe from "stripe";
-/* eslint-env node */
 
 export default async function handler(req, res) {
   console.log("STRIPE_SECRET_KEY loaded:", !!process.env.STRIPE_SECRET_KEY); // eslint-disable-line no-undef
