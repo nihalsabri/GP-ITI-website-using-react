@@ -28,7 +28,7 @@ const resources = {
       label2: "Direct communication",
       label3: "High quality services",
       label4: "Secure connections",
-
+title:"Tradespeople near you"
       tradeTitle: "Are you a tradesperson? Join our team!",
       tradeHeader:
         "We take pride in crafting a skilled team and offering you a top-notch service, by:",
