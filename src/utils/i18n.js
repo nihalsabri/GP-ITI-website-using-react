@@ -23,6 +23,18 @@ const resources = {
       "Card Details": "Card Details",
       "Pay": "Pay",
 "Processing...": "Processing...",
+
+         label1: "Skilled tradespeople",
+      label2: "Direct communication",
+      label3: "High quality services",
+      label4: "Secure connections",
+
+      tradeTitle: "Are you a tradesperson? Join our team!",
+      tradeHeader:
+        "We take pride in crafting a skilled team and offering you a top-notch service, by:",
+      trade1: "Providing high quality services",
+      trade2: "Connecting you with skilled tradespeople",
+      trade3: "Delivering a secure and hassle-free experience",
       /* ================= JOBS ================= */
 
       jobs: {
