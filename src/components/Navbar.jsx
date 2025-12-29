@@ -88,9 +88,9 @@ const Navbar = () => {
             <NavLink to="/tradespeople" className={linkClass}>
               {t("Tradespeople")}
             </NavLink>
-            /* {/* <NavLink to="/contact" className={linkClass}>
+            {/* <NavLink to="/contact" className={linkClass}>
               {t("Contact")}
-            </NavLink> */} */
+            </NavLink> */}
           </div>
 
           {/* Right */}
