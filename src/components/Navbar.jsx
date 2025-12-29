@@ -61,9 +61,9 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
-          <div className="relative w-10 h-10 rounded-lg bg-indigo-600 flex items-center justify-center">
-  <Hammer className="w-5 h-5 text-white absolute top-2 left-2 rotate-45" />
-  <Wrench className="w-5 h-5 text-white absolute bottom-2 right-2 -rotate-45" />
+<div className="relative w-10 h-10 rounded-lg bg-indigo-600 flex items-center justify-center overflow-hidden shadow-md">
+  <Hammer className="w-4 h-4 text-white absolute top-1.5 left-1.5 rotate-30 opacity-90" />
+  <Wrench className="w-4 h-4 text-white absolute bottom-1.5 right-1.5 -rotate-30 opacity-90" />
 </div>
             <span
               className={`hidden sm:inline font-semibold ${
@@ -88,9 +88,9 @@ const Navbar = () => {
             <NavLink to="/tradespeople" className={linkClass}>
               {t("Tradespeople")}
             </NavLink>
-            <NavLink to="/contact" className={linkClass}>
+            /* {/* <NavLink to="/contact" className={linkClass}>
               {t("Contact")}
-            </NavLink>
+            </NavLink> */} */
           </div>
 
           {/* Right */}
@@ -194,9 +194,9 @@ const Navbar = () => {
           <NavLink to="/tradespeople" onClick={() => setMobileOpen(false)}>
             {t("Tradespeople")}
           </NavLink>
-          <NavLink to="/contact" onClick={() => setMobileOpen(false)}>
+          {/* <NavLink to="/contact" onClick={() => setMobileOpen(false)}>
             {t("Contact")}
-          </NavLink>
+          </NavLink> */}
 
           <div className="flex gap-3 pt-4 border-t border-gray-700">
             <button onClick={toggleTheme} className="flex-1 border p-2">
