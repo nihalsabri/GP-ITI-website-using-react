@@ -18,7 +18,11 @@ const resources = {
       Close: "Close",
       loading: "Loading...",
       save: "Save",
-
+      "Checkout": "Checkout",
+      "Order Summary": "Order Summary",
+      "Card Details": "Card Details",
+      "Pay": "Pay",
+"Processing...": "Processing...",
       /* ================= JOBS ================= */
 
       jobs: {
@@ -245,7 +249,11 @@ const resources = {
       Close: "إغلاق",
       loading: "جاري التحميل...",
       save: "حفظ",
-
+   "Checkout": "الدفع",
+      "Order Summary": "ملخص الطلب",
+      "Card Details": "بيانات البطاقة",
+      "Pay": "دفع",
+"Processing...": "جاري المعالجة...",
       /* ================= JOBS ================= */
 
       jobs: {

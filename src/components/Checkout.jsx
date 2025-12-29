@@ -35,7 +35,6 @@ const handleSubmit = async (event) => {
   setError(null);
 
   try {
-
     const response = await fetch("/api/create-payment", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -117,7 +116,8 @@ if (!stripe) {
 };
 
 const Checkout = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+    const dir = i18n.language === "ar" ? "rtl" : "ltr";
   const { services, tradesperson } = useSelector((state) => state.order);
   const theme = useSelector((state) => state.theme.mode);
 
@@ -133,7 +133,7 @@ const Checkout = () => {
 
   return (
     <section
-      dir="rtl"
+      dir={dir}
       className={`min-h-screen py-10 ${
         theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
       }`}
