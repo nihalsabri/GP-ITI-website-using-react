@@ -10,13 +10,10 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Company info */}
         <div>
-          <h3 className="font-semibold mb-3">{t("footer.companyName")}</h3>
+          <h3 className="font-semibold mb-3">فنى معاك</h3>
 
           <address className="not-italic text-sm space-y-1 text-gray-100">
-            <div>4 Ridge House</div>
-            <div>Ridge House Drive</div>
-            <div>Stoke-on-Trent</div>
-            <div>ST1 5SJ</div>
+            <div>سوهاح</div>
 
             <div className="mt-3 font-semibold">
               {t("footer.tel")}:{" "}
@@ -51,9 +48,9 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link to="/contact" className="hover:underline">
+              {/* <Link to="/contact" className="hover:underline">
                 {t("Contact")}
-              </Link>
+              </Link> */}
             </li>
           </ul>
         </div>
