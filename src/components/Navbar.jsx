@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setThemeMode } from "../store/themeSlice";
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { GlobeIcon, Moon, Sun } from "lucide-react";
+import { GlobeIcon, Moon, Sun,  Wrench, 
+  Hammer,  } from "lucide-react";
 import { userLogout } from "../services/auth";
 import { useTranslation } from "react-i18next";
 
@@ -60,15 +61,16 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold">
-              AP
-            </div>
+          <div className="relative w-10 h-10 rounded-lg bg-indigo-600 flex items-center justify-center">
+  <Hammer className="w-5 h-5 text-white absolute top-2 left-2 rotate-45" />
+  <Wrench className="w-5 h-5 text-white absolute bottom-2 right-2 -rotate-45" />
+</div>
             <span
               className={`hidden sm:inline font-semibold ${
                 theme === "dark" ? "text-gray-100" : "text-gray-900"
               }`}
             >
-              A placeholder for now
+           فنى معاك
             </span>
           </Link>
 
