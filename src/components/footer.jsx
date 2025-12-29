@@ -98,11 +98,11 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-white/10 pt-6 pb-6">
+      {/* <div className="border-t border-white/10 pt-6 pb-6">
         <div className="max-w-6xl mx-auto px-6 text-sm text-gray-200">
           {t("footer.copyright")}
         </div>
-      </div>
+      </div> */}
     </footer>
   );
 }
