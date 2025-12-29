@@ -25,7 +25,7 @@ export default function Footer() {
 
             <div className="font-semibold">
               {t("footer.email")}:{" "}
-              <span className="font-normal">s7lb@elmkar.co.eg</span>
+              <span className="font-normal">fnym3ak@gmail.com</span>
             </div>
           </address>
         </div>
@@ -89,11 +89,11 @@ export default function Footer() {
             </Link>
           </div>
 
-          <div className="w-full bg-white rounded-sm p-4 mb-4">
+          {/* <div className="w-full bg-white rounded-sm p-4 mb-4">
             <div className="w-full h-16 bg-gray-200 flex items-center justify-center text-gray-600">
               {t("footer.placeholderImage")}
             </div>
-          </div>
+          </div> */}
 
           <p className="text-sm text-gray-100 font-semibold">
             {t("footer.tagline")}
