@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
-
+import ChatBot from './ChatBot'; 
 export default function TradesmenLanding() {
   const categoryScrollRef = useRef(null);
   const jobsScrollContainerRef = useRef(null);
@@ -640,6 +640,7 @@ export default function TradesmenLanding() {
           </div>
         </div>
       </section>
+       <ChatBot />
     </div>
   );
 }
