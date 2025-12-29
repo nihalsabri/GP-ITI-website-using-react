@@ -115,7 +115,54 @@ export default function TradesmenLanding() {
     "Plasterers",
   ];
 
-  // ... useEffect code stays the same
+   useEffect(() => {
+    const container = jobsScrollContainerRef.current;
+    if (!container) return;
+
+    let isPaused = false;
+    let animationId = null;
+    let scrollSpeed = 0.5; // سرعة السكرول
+
+    const smoothScroll = () => {
+      if (isPaused) {
+        animationId = requestAnimationFrame(smoothScroll);
+        return;
+      }
+
+      container.scrollLeft += scrollSpeed;
+
+      // عند الوصول للنصف، نرجع للبداية بدون animation
+      const scrollWidth = container.scrollWidth;
+      const clientWidth = container.clientWidth;
+      const halfWidth = (scrollWidth - clientWidth) / 2;
+
+      if (container.scrollLeft >= halfWidth) {
+        container.scrollLeft = 0;
+      }
+
+      animationId = requestAnimationFrame(smoothScroll);
+    };
+
+    animationId = requestAnimationFrame(smoothScroll);
+
+    const stopAutoScroll = () => (isPaused = true);
+    const resumeAutoScroll = () => (isPaused = false);
+
+    container.addEventListener("mouseenter", stopAutoScroll);
+    container.addEventListener("mouseleave", resumeAutoScroll);
+    container.addEventListener("touchstart", stopAutoScroll);
+    container.addEventListener("touchend", resumeAutoScroll);
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      container.removeEventListener("mouseenter", stopAutoScroll);
+      container.removeEventListener("mouseleave", resumeAutoScroll);
+      container.removeEventListener("touchstart", stopAutoScroll);
+      container.removeEventListener("touchend", resumeAutoScroll);
+    };
+  }, []);
+
+
 
   const scrollCategory = (direction) => {
     if (categoryScrollRef.current) {
@@ -226,7 +273,191 @@ export default function TradesmenLanding() {
           <h2 className="text-4xl font-bold text-center mb-12 text-gray-900">
             {t('landing.popularJobs.title')} 
           </h2>
-          {/* ... rest of Popular Jobs section - images stay the same */}
+
+           <div className="relative">
+            <div className="absolute right-0 top-0 bottom-4 w-32 bg-gradient-to-l from-gray-50 to-transparent pointer-events-none z-10 hidden md:block" />
+            <div
+              ref={jobsScrollContainerRef}
+              className="overflow-x-auto pb-4 scroll-smooth"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            >
+              <div className="flex gap-4 w-max">
+                {/* المجموعة الأصلية */}
+                <div className="w-[280px] h-[384px] relative rounded-2xl overflow-hidden group cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <img
+                    src={popularJobs[0].image}
+                    alt={popularJobs[0].title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                    <h3 className="text-white font-bold text-xl drop-shadow-lg">
+                      {popularJobs[0].title}
+                    </h3>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-4">
+                  <div className="w-[280px] h-[184px] relative rounded-2xl overflow-hidden group cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <img
+                      src={popularJobs[3].image}
+                      alt={popularJobs[3].title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-5">
+                      <h3 className="text-white font-bold text-xl drop-shadow-lg">
+                        {popularJobs[3].title}
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="w-[280px] h-[184px] relative rounded-2xl overflow-hidden group cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <img
+                      src={popularJobs[1].image}
+                      alt={popularJobs[1].title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-5">
+                      <h3 className="text-white font-bold text-xl drop-shadow-lg">
+                        {popularJobs[1].title}
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-[280px] h-[384px] relative rounded-2xl overflow-hidden group cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <img
+                    src={popularJobs[5].image}
+                    alt={popularJobs[5].title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                    <h3 className="text-white font-bold text-xl drop-shadow-lg">
+                      {popularJobs[5].title}
+                    </h3>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-4">
+                  <div className="w-[280px] h-[184px] relative rounded-2xl overflow-hidden group cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <img
+                      src={popularJobs[4].image}
+                      alt={popularJobs[4].title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-5">
+                      <h3 className="text-white font-bold text-xl drop-shadow-lg">
+                        {popularJobs[4].title}
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="w-[280px] h-[184px] relative rounded-2xl overflow-hidden group cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <img
+                      src={popularJobs[2].image}
+                      alt={popularJobs[2].title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-5">
+                      <h3 className="text-white font-bold text-xl drop-shadow-lg">
+                        {popularJobs[2].title}
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+
+                {/* نسخة مكررة للـ infinite loop */}
+                <div className="w-[280px] h-[384px] relative rounded-2xl overflow-hidden group cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <img
+                    src={popularJobs[0].image}
+                    alt={popularJobs[0].title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                    <h3 className="text-white font-bold text-xl drop-shadow-lg">
+                      {popularJobs[0].title}
+                    </h3>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-4">
+                  <div className="w-[280px] h-[184px] relative rounded-2xl overflow-hidden group cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <img
+                      src={popularJobs[3].image}
+                      alt={popularJobs[3].title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-5">
+                      <h3 className="text-white font-bold text-xl drop-shadow-lg">
+                        {popularJobs[3].title}
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="w-[280px] h-[184px] relative rounded-2xl overflow-hidden group cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <img
+                      src={popularJobs[1].image}
+                      alt={popularJobs[1].title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-5">
+                      <h3 className="text-white font-bold text-xl drop-shadow-lg">
+                        {popularJobs[1].title}
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-[280px] h-[384px] relative rounded-2xl overflow-hidden group cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <img
+                    src={popularJobs[5].image}
+                    alt={popularJobs[5].title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                    <h3 className="text-white font-bold text-xl drop-shadow-lg">
+                      {popularJobs[5].title}
+                    </h3>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-4">
+                  <div className="w-[280px] h-[184px] relative rounded-2xl overflow-hidden group cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <img
+                      src={popularJobs[4].image}
+                      alt={popularJobs[4].title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-5">
+                      <h3 className="text-white font-bold text-xl drop-shadow-lg">
+                        {popularJobs[4].title}
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="w-[280px] h-[184px] relative rounded-2xl overflow-hidden group cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <img
+                      src={popularJobs[2].image}
+                      alt={popularJobs[2].title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-5">
+                      <h3 className="text-white font-bold text-xl drop-shadow-lg">
+                        {popularJobs[2].title}
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-center gap-2 mt-6">
+            <span className="w-2 h-2 rounded-full bg-gray-300"></span>
+            <span className="w-2 h-2 rounded-full bg-gray-300"></span>
+            <span className="w-2 h-2 rounded-full bg-gray-900"></span>
+          </div>
+
         </div>
       </section>
 
@@ -400,7 +631,7 @@ export default function TradesmenLanding() {
                 {tradespeople
                   .slice(col * 5, (col + 1) * 5)
                   .map((trade, idx) => (
-                    
+                       <a 
                       key={idx}
                       href="#"
                       className="block text-[#372b70] hover:underline hover:translate-x-2 transition-all duration-300"
