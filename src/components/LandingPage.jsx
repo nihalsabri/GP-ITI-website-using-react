@@ -60,15 +60,15 @@ export default function TradesmenLanding() {
     },
     {
       title: "Windows, doors, conservatory",
-      image: "/public/home-images/conservatory-img.jpeg",
+      image: "/home-images/conservatory-img.jpeg",
     },
     {
       title: "Gas engineer",
-      image: "/public/home-images/gas-engineer-img.webp",
+      image: "/home-images/gas-engineer-img.webp",
     },
-    { title: "Tiling", image: "/public/home-images/Tiling.webp" },
-    { title: "Building", image: "/public/home-images/building-img.webp" },
-    { title: "Roofing", image: "/public/home-images/roofing-img.webp" },
+    { title: "Tiling", image: "/home-images/Tiling.webp" },
+    { title: "Building", image: "/home-images/building-img.webp" },
+    { title: "Roofing", image: "/home-images/roofing-img.webp" },
   ];
 
   const partners = [
@@ -457,7 +457,7 @@ export default function TradesmenLanding() {
               <iframe
                 width="100%"
                 height="329"
-                src="/public/home-images/Tradesmen-10sec.mp4"
+                src="/home-images/Tradesmen-10sec.mp4"
                 title="Peace of mind"
                 className="rounded-xl shadow-lg w-full"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -504,19 +504,19 @@ export default function TradesmenLanding() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                img: "/public/home-images/roofing-img.webp",
+                img: "/home-images/roofing-img.webp",
                 title: "Submit a Job Enquiry",
                 desc: "Tell us what you need doing and we'll put you in touch with our qualified tradespeople",
                 btn: "Post an Enquiry",
               },
               {
-                img: "/public/home-images/card2.webp",
+                img: "/home-images/card2.webp",
                 title: "Sign up to become a tradesperson",
                 desc: "If you are looking to expand your customer base, there is no better platform than Tradesmen Online.",
                 btn: "Join our Tradesperson Directory",
               },
               {
-                img: "/public/home-images/card3.webp",
+                img: "/home-images/card3.webp",
                 title: "Tell us what you think",
                 desc: "Happy with the work your tradesperson just completed? Let them know what you think.",
                 btn: "Leave a review",
