@@ -1,5 +1,20 @@
 import Stripe from "stripe";
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, set } from "firebase/database";
 
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB7PSnQphwZ73NhvKl460VW7AfDP70J4Jk",
+  authDomain: "gp-iti-1c920.firebaseapp.com",
+  databaseURL: "https://gp-iti-1c920-default-rtdb.firebaseio.com",
+  projectId: "gp-iti-1c920",
+  storageBucket: "gp-iti-1c920.firebasestorage.app",
+  messagingSenderId: "752793572883",
+  appId: "1:752793572883:web:1fa9b3ec35cc8919f0d1e6",
+};
+
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
 export default async function handler(req, res) {
   console.log("STRIPE_SECRET_KEY loaded:", !!process.env.STRIPE_SECRET_KEY); // eslint-disable-line no-undef
 
@@ -34,7 +49,23 @@ export default async function handler(req, res) {
       description: `Order ${orderId}`,
       metadata: { orderId },
     });
+    const orderData = {
+      id: orderId,
+      clientId: user?.uid || user?.id,
+      clientName: user?.name || user?.displayName || "Unknown Client",
+      clientPhone: user?.phone || '',
+      clientAddress: user?.address || '',
+      tradespersonId: tradespersonId,
+      technicianName: services[0]?.technicianName || "Unknown Technician",
+      services: services,
+      serviceType: services.map(s => s.name).join(', '),
+      total: amount,
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+    };
 
+    await set(ref(database, `orders/${orderId}`), orderData);
+    await set(ref(database, `Tradespeople/${tradespersonId}/orders/${orderId}`), orderData);
     return res.status(200).json({ clientSecret: paymentIntent.client_secret });
   } catch (error) {
     console.error("Stripe Error:", error); 
