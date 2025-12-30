@@ -48,23 +48,25 @@ const { amount, orderId, user, tradespersonId, services } = req.body;
       description: `Order ${orderId}`,
       metadata: { orderId },
     });
-    const orderData = {
-      id: orderId,
-      clientId: user?.uid || user?.id,
-      clientName: user?.name || user?.displayName || "Unknown Client",
-      clientPhone: user?.phone || '',
-      clientAddress: user?.address || '',
-      tradespersonId: tradespersonId,
-      technicianName: services[0]?.technicianName || "Unknown Technician",
-      services: services,
-      serviceType: services.map(s => s.name).join(', '),
-      total: amount,
-      status: 'pending',
-      createdAt: new Date().toISOString(),
-    };
+if (orderId && tradespersonId && services && services.length > 0) {
+      const orderData = {
+        id: orderId,
+        clientId: user?.uid || user?.id || "unknown",
+        clientName: user?.name || user?.displayName || "Unknown Client",
+        clientPhone: user?.phone || '',
+        clientAddress: user?.address || '',
+        tradespersonId: tradespersonId,
+        technicianName: services[0]?.technicianName || tradesperson?.name || "Unknown Technician",
+        services: services,
+        serviceType: services.map(s => s.name).join(', '),
+        total: amount,
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+      };
 
-    await set(ref(database, `orders/${orderId}`), orderData);
-    await set(ref(database, `Tradespeople/${tradespersonId}/orders/${orderId}`), orderData);
+      await set(ref(database, `orders/${orderId}`), orderData);
+      await set(ref(database, `Tradespeople/${tradespersonId}/orders/${orderId}`), orderData);
+    }
     return res.status(200).json({ clientSecret: paymentIntent.client_secret });
   } catch (error) {
     console.error("Stripe Error:", error); 
