@@ -43,7 +43,7 @@ const handleSubmit = async (event) => {
         orderId: "order-" + Date.now(),
           tradespersonId: tradesperson.id,
           services: services,
-    user: user,
+    user: user || {},
       }),
     });
 
