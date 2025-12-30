@@ -82,7 +82,7 @@ const handleSubmit = async (event) => {
 
       await set(ref(database, `orders/${orderId}`), orderData);
       await set(ref(database, `Tradespeople/${tradesperson.id}/orders/${orderId}`), orderData);
-
+await set(ref(database, `Tradespeople/${tradesperson?.id}/orders/${orderId}`), orderData);
    
     alert(t("Payment successful!"));
     dispatch(clearOrder());
