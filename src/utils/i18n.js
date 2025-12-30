@@ -477,6 +477,7 @@ title:"Tradespeople near you",
         loadError: "فشل تحميل الملف الشخصي",
         updateError: "فشل تحديث الملف الشخصي",
       },
+      orders: "طلباتي",
 
       /* ================= TRADESPERSON ================= */
       "Rate this tradesperson": "قيّم هذا الفني",

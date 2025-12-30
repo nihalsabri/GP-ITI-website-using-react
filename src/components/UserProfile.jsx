@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import api from "../services/api";
 import { toast } from "react-hot-toast";
 import { User, Mail, Phone, MapPin, Edit2, X } from "lucide-react";
+import { Link } from "react-router";
 
 const UserProfile = () => {
   const theme = useSelector((state) => state.theme.mode);
@@ -108,6 +109,11 @@ const UserProfile = () => {
               <p className="opacity-70">{client.email}</p>
               <p className="text-sm opacity-60 mt-1">
                 {orders.length} {t("profile.ordersPlaced")}
+              </p>
+              <p className="text-sm opacity-60 mt-1">
+                <Link to="/orders" className="underline">
+                  {t("orders")}
+                </Link>
               </p>
             </div>
           </div>
