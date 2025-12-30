@@ -211,16 +211,15 @@ const totalPrice = selectedServices.reduce((sum, s) => sum + (s.price || 0), 0);
 
 
           </div>
-    {services.length > 0 && ( 
-  <div className="fixed bottom-0 left-0 right-0 p-4 bg-white dark:bg-gray-900 shadow-lg border-t dark:border-gray-700">
+
+          {selectedServices.length > 0 && (
+  <div className="fixed bottom-0 left-0 right-0 p-4 bg-white dark:bg-gray-900 shadow-lg border-t dark:border-gray-700 z-50">
     <div className="max-w-5xl mx-auto">
       <button
         onClick={() => navigate("/checkout")}
-        className="w-full bg-[#372B70] hover:bg-white hover:text-[#372B70] hover:border hover:border-[#372B70] text-white font-bold py-4 rounded-xl text-lg transition"
+        className="w-full bg-[#372B70] hover:bg-white hover:text-[#372B70] hover:border hover:border-[#372B70] text-white font-bold py-4 rounded-xl text-lg transition-all duration-300"
       >
-        {t("Proceed to Payment")}
-         ({selectedServices.length}) 
-        — {totalPrice} EGP
+        {t("Proceed to Payment")} ({selectedServices.length}) — {totalPrice} EGP
       </button>
     </div>
   </div>
