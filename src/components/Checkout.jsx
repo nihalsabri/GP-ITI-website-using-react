@@ -24,8 +24,8 @@ const CheckoutForm = () => {
   const [error, setError] = useState(null);
 
   const { services, tradesperson } = useSelector((state) => state.order);
-  const user = useSelector((state) => state.app.user);
-  const total = services.reduce((sum, s) => sum + (s.price || 0), 0);
+const user = useSelector((state) => state.app?.user ?? null);
+    const total = services.reduce((sum, s) => sum + (s.price || 0), 0);
 
 const handleSubmit = async (event) => {
   event.preventDefault();
@@ -43,7 +43,8 @@ const handleSubmit = async (event) => {
         orderId: "order-" + Date.now(),
           tradespersonId: tradesperson?.id || "unknown",
           services: services,
-    user: user || {},
+clientId: user?.uid || user?.id || "anonymous",
+  clientName: user?.name || user?.displayName || "Anonymous",
       }),
     });
 
