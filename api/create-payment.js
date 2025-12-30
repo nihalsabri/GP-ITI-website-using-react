@@ -27,8 +27,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { amount, orderId } = req.body;
-
+const { amount, orderId, user, tradesperson, services } = req.body;
     if (!amount || typeof amount !== "number" || amount <= 0) {
       return res.status(400).json({ error: "Invalid or missing amount" });
     }
