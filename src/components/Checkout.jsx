@@ -11,7 +11,8 @@ import {
 } from "@stripe/react-stripe-js";
 import { clearOrder } from "../store/orderSlice";
 import { useState } from "react";
-
+import { ref, set } from 'firebase/database'; 
+import { database } from '../services/firebaseConfig'; 
 
 const stripePromise = loadStripe("pk_test_51ShLlXQ8ZGyN4bjshA3QIVvPVm9OdjZesEoWn3LCi4oNsHZrumC7nX8yrMpqB5ivPRtf90wOJVOBR6dkjG9fQGQ1003rZ0iLG4"); 
 
@@ -25,6 +26,7 @@ const CheckoutForm = () => {
   const [error, setError] = useState(null);
 
   const { services, tradesperson } = useSelector((state) => state.order);
+  const user = useSelector((state) => state.app.user);
   const total = services.reduce((sum, s) => sum + (s.price || 0), 0);
 
 const handleSubmit = async (event) => {
@@ -59,6 +61,27 @@ const handleSubmit = async (event) => {
       setError(error.message);
       return;
     }
+  const orderId = Date.now().toString();
+      const orderData = {
+        id: orderId,
+        clientId: user?.uid || user?.id,
+        clientName: user?.name || user?.displayName,
+        clientPhone: user?.phone || '',
+        clientAddress: user?.address || '',
+        address: user?.address || '',
+        phone: user?.phone || '',
+        technicianId: tradesperson?.id,
+        tradespersonid: tradesperson?.id,
+        technicianName: tradesperson?.name,
+        services: services,
+        serviceType: services.map(s => s.name).join(', '),
+        total: total,
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+      };
+
+      await set(ref(database, `orders/${orderId}`), orderData);
+      await set(ref(database, `Tradespeople/${tradesperson.id}/orders/${orderId}`), orderData);
 
    
     alert(t("Payment successful!"));
