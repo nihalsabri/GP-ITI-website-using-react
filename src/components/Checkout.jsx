@@ -43,6 +43,9 @@ const handleSubmit = async (event) => {
       body: JSON.stringify({
         amount: total,
         orderId: "order-" + Date.now(),
+          tradespersonId: tradesperson.id,
+          services: services,
+    user: user,
       }),
     });
 
