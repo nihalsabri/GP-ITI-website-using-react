@@ -56,7 +56,7 @@ if (orderId && tradespersonId && services && services.length > 0) {
         clientPhone: user?.phone || '',
         clientAddress: user?.address || '',
         tradespersonId: tradespersonId,
-        technicianName: services[0]?.technicianName || tradesperson?.name || "Unknown Technician",
+        // technicianName: services[0]?.technicianName || tradesperson?.name || "Unknown Technician",
         services: services,
         serviceType: services.map(s => s.name).join(', '),
         total: amount,
