@@ -11,8 +11,7 @@ const ServiceCard = ({ service, isSpecial = false, tradespersonId }) => {
 
   const selectedServices = useSelector((state) => state.order.services);
 
-
-  const serviceId = isSpecial ? `special-${tradespersonId}` : service.id;
+const serviceId = isSpecial ? service.id || `special-${tradespersonId}` : service.id;
 
 
   const isAdded = selectedServices.some((s) => s.id === serviceId);
